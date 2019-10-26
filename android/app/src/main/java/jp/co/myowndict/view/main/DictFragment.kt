@@ -59,6 +59,7 @@ class DictFragment : DaggerFragment() {
         binding.refreshLayout.setOnRefreshListener {
             dictViewModel.getSentences()
         }
+        binding.quizFab.setOnClickListener { mainViewModel.showQuiz() }
         dictViewModel.getSentences()
 
         observe()
