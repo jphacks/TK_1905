@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import jp.co.myowndict.di.ViewModelKey
+import jp.co.myowndict.view.main.MainViewModel
 import jp.co.myowndict.view.splash.SplashViewModel
 
 @Module
@@ -17,9 +18,13 @@ internal abstract class ActivityModule {
     )
     internal abstract fun contributeMainActivity(): MainActivity
 
-
     @Binds
     @IntoMap
     @ViewModelKey(SplashViewModel::class)
     abstract fun bindSplashViewModel(viewModel: SplashViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 }
