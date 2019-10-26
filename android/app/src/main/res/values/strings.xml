@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">My Own Dict</string>
 
-    <!-- TODO: 用途がわからないので適当な名前をつけている -->
-    <string name="sentence_count">%1$s回</string>
+    <string name="spoken_count">%1$s回</string>
 </resources>
