@@ -16,11 +16,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import dagger.android.DaggerService
 import jp.co.myowndict.data.Repository
-import jp.co.myowndict.model.Result
+import jp.co.myowndict.model.SpeechEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -148,8 +148,9 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
         override fun onPartialResults(partialResults: Bundle?) {
             partialResults ?: return
-            val strings = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-            Timber.d("$strings")
+            partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.takeIf { it.isNotEmpty() }?.let {
+                EventBus.getDefault().post(SpeechEvent.OnPartialResult(it.first()))
+            }
         }
 
         override fun onEvent(eventType: Int, params: Bundle?) {
@@ -192,13 +193,17 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
             val candidates = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
             val s: String? = candidates?.first()
 
+//            s?.let {
+//                launch {
+//                    when(repository.sendText(it)) {
+//                        is Result.Success -> Timber.d("Sent -> $it")
+//                        is Result.Error -> Timber.e("Failed to send -> $it")
+//                    }
+//                }
+//            }
+
             s?.let {
-                launch {
-                    when(repository.sendText(it)) {
-                        is Result.Success -> Timber.d("Sent -> $it")
-                        is Result.Error -> Timber.e("Failed to send -> $it")
-                    }
-                }
+                EventBus.getDefault().post(SpeechEvent.OnPartialResult(it))
             }
 
             // トーストで結果を表示
