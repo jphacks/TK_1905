@@ -7,7 +7,6 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import jp.co.myowndict.di.ViewModelKey
 import jp.co.myowndict.view.di.FragmentModule
-import jp.co.myowndict.view.main.MainViewModel
 import jp.co.myowndict.view.splash.SplashViewModel
 
 @Module

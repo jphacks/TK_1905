@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.wada811.databinding.dataBinding
@@ -12,6 +13,7 @@ import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentRecordingBinding
 import jp.co.myowndict.model.SpeechEvent
+import jp.co.myowndict.view.MainViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -21,6 +23,7 @@ import javax.inject.Inject
 class RecordingFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val mainViewModel: MainViewModel by activityViewModels { viewModelFactory }
     private val viewModel: RecordingViewModel by viewModels { viewModelFactory }
     private val binding by dataBinding<FragmentRecordingBinding>(R.layout.fragment_recording)
 
@@ -33,6 +36,16 @@ class RecordingFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.also {
+            it.viewModel = viewModel
+            it.lifecycleOwner = viewLifecycleOwner
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // TODO: 雑実装。後で修正
+        mainViewModel.startRecording()
     }
 
     fun startTagAnimation() {
@@ -63,7 +76,11 @@ class RecordingFragment : DaggerFragment() {
     fun onMessageReceiveEvent(event: SpeechEvent) {
         when (event) {
             is SpeechEvent.OnPartialResult -> viewModel.updatePartialResult(event.partialText)
-            is SpeechEvent.OnResult -> viewModel.addResult(event.text)
+            is SpeechEvent.OnResult -> {
+                viewModel.clearPartialResult()
+                viewModel.addResult(event.text)
+                viewModel.sendSpeechText(event.text)
+            }
         }
 
         Timber.d(event.toString())

@@ -11,21 +11,12 @@ import jp.co.myowndict.view.ApiFragmentViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
+class DictViewModel @Inject constructor(
     private val repository: Repository
 ) : ApiFragmentViewModel() {
     private val sentencesLiveData: MutableLiveData<List<Sentence>> = MutableLiveData()
     val sentences: LiveData<List<Sentence>>
         get() = sentencesLiveData
-
-    fun sendSpeechText(text: String) {
-        viewModelScope.launchWithProgress(inProgressLiveData) {
-            when (val result = repository.sendText(text)) {
-                is Result.Success -> Timber.d("Sent content -> $text")
-                is Result.Error -> Timber.e("Failed to send content -> $text")
-            }
-        }
-    }
 
     fun getSentences() {
         viewModelScope.launchWithProgress(inProgressLiveData) {
