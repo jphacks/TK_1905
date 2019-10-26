@@ -103,4 +103,6 @@ dependencies {
     debugImplementation "com.willowtreeapps.hyperion:hyperion-recorder:0.9.27"
     debugImplementation "com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.27"
     debugImplementation "com.willowtreeapps.hyperion:hyperion-timber:0.9.27"
+
+    implementation "org.greenrobot:eventbus:3.1.1"
 }
