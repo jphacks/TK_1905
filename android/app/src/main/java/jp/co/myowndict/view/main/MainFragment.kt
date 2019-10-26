@@ -55,7 +55,6 @@ class MainFragment : DaggerFragment() {
                 }
             }
         })
-        startSpeechRecording()
     }
 
     @NeedsPermission(Manifest.permission.RECORD_AUDIO)
