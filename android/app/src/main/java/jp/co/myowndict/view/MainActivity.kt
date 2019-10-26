@@ -1,7 +1,8 @@
-package jp.co.myowndict
+package jp.co.myowndict.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import jp.co.myowndict.R
 
 class MainActivity : AppCompatActivity() {
 
