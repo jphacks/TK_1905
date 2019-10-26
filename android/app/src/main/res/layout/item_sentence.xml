@@ -47,8 +47,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="@{sentence.count}"
-                tools:text="@string/dict_count" />
+                android:text="@{@string/sentence_count(sentence.count)}"
+                tools:text="@string/sentence_count" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
