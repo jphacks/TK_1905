@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.wada811.databinding.dataBinding
@@ -29,7 +31,16 @@ class MainFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO: test
-        binding.text.text = "Hello binding!!!"
+        binding.viewPager.adapter = MainFragmentPagerAdapter(this)
+    }
+
+    class MainFragmentPagerAdapter(
+        parentFragment: Fragment
+    ) : FragmentStateAdapter(parentFragment) {
+        private val fragments = listOf(DictFragment(), RecordingFragment())
+
+        override fun createFragment(position: Int): Fragment = fragments[position]
+
+        override fun getItemCount(): Int = fragments.size
     }
 }
