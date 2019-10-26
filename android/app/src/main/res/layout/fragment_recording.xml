@@ -36,23 +36,44 @@
                 android:textColor="@color/white"/>
         </ScrollView>
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/slideBar"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:src="@drawable/slide_bar_while"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="w,3:37"
             app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+            <ImageView
+                android:id="@+id/slideBarImage"
+                android:layout_width="50dp"
+                android:layout_height="150dp"
+                android:layout_gravity="bottom"
+                android:src="@drawable/side_bar_white" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="150dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
+            android:src="@drawable/ic_stop"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            app:maxImageSize="60dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
