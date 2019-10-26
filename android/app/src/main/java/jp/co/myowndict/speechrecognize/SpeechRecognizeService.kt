@@ -152,8 +152,8 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
             partialResults ?: return
             partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 ?.takeIf { it.isNotEmpty() }?.let {
-                EventBus.getDefault().post(SpeechEvent.OnPartialResult(it.first()))
-            }
+                    EventBus.getDefault().post(SpeechEvent.OnPartialResult(it.first()))
+                }
         }
 
         override fun onEvent(eventType: Int, params: Bundle?) {

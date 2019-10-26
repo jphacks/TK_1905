@@ -27,7 +27,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getSentances() {
+    fun getSentences() {
         viewModelScope.launchWithProgress(inProgressLiveData) {
             when (val result = repository.getSentences()) {
                 is Result.Success -> sentencesLiveData.value = result.data.sentences
