@@ -115,6 +115,8 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                     "ja_JP"
                 )
                 it.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+                it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
+                it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
             }
 
             speechRecognizer!!.startListening(intent)
