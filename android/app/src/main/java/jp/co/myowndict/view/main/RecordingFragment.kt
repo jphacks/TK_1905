@@ -85,7 +85,6 @@ class RecordingFragment : DaggerFragment() {
                 // 信頼度によって棄却された場合の処理
                 viewModel.clearPartialResult()
                 viewModel.addResult(event.text)
-                viewModel.sendSpeechText(event.text)
             }
         }
 
