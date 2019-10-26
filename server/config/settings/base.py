@@ -184,7 +184,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'main.User'
 
-LOGIN_URL = '/signin/'
+LOGIN_URL = '/admin/login/'
 LOGIN_REDIRECT_URL = '/'
 
 STATICFILES_FINDERS = (
