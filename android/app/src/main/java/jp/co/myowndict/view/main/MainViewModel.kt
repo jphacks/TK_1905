@@ -21,8 +21,8 @@ class MainViewModel @Inject constructor(
     fun sendSpeechText(text: String) {
         viewModelScope.launchWithProgress(inProgressLiveData) {
             when (val result = repository.sendText(text)) {
-                is Result.Success -> Timber.d("Sent text -> $text")
-                is Result.Error -> Timber.e("Failed to send text -> $text")
+                is Result.Success -> Timber.d("Sent content -> $text")
+                is Result.Error -> Timber.e("Failed to send content -> $text")
             }
         }
     }
