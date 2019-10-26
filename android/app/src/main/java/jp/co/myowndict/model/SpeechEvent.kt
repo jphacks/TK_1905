@@ -1,7 +1,7 @@
 package jp.co.myowndict.model
 
 sealed class SpeechEvent {
-    data class OnResultEvent(
+    data class OnResult(
         val text: String
     ) : SpeechEvent()
 

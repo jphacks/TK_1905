@@ -3,11 +3,9 @@ package jp.co.myowndict.view.main
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startForegroundService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -135,8 +133,10 @@ class MainFragment : DaggerFragment() {
     fun onMessageRecieveEvent(event: SpeechEvent) {
         when (event) {
             is SpeechEvent.OnPartialResult -> event.partialText
-            is SpeechEvent.OnResultEvent -> event.text
+            is SpeechEvent.OnResult -> event.text
         }
+
+        Timber.d(event.toString())
     }
 
     class MainFragmentPagerAdapter(

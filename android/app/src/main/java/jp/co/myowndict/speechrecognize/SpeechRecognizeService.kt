@@ -203,7 +203,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 //            }
 
             s?.let {
-                EventBus.getDefault().post(SpeechEvent.OnPartialResult(it))
+                EventBus.getDefault().post(SpeechEvent.OnResult(it))
             }
 
             // トーストで結果を表示
