@@ -56,7 +56,7 @@ class MainFragment : DaggerFragment() {
         try {
             requireActivity().stopService(speechService)
         } catch (e: Exception) {
-            Timber.d(e.stackTrace)
+            Timber.d(e)
         }
     }
 
