@@ -9,9 +9,8 @@ import jp.co.myowndict.model.*
 import retrofit2.Response
 import timber.log.Timber
 import java.net.ConnectException
-import javax.inject.Inject
-import java.lang.Exception
 import java.util.*
+import javax.inject.Inject
 
 class Repository @Inject constructor(
     private val application: MyApplication,

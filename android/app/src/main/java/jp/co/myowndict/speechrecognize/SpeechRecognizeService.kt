@@ -3,7 +3,6 @@ package jp.co.myowndict.speechrecognize
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -15,11 +14,25 @@ import android.speech.SpeechRecognizer
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import dagger.android.DaggerService
+import jp.co.myowndict.data.Repository
+import jp.co.myowndict.model.Result
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
-class SpeechRecognizeService : Service() {
+class SpeechRecognizeService : DaggerService(), CoroutineScope {
     private var speechRecognizer: SpeechRecognizer? = null
     private lateinit var notification: Notification
+
+    @Inject
+    lateinit var repository: Repository
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + Job()
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -182,6 +195,15 @@ class SpeechRecognizeService : Service() {
         override fun onResults(results: Bundle?) {
             val candidates = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
             val s: String? = candidates?.first()
+
+            s?.let {
+                launch {
+                    when(repository.sendText(it)) {
+                        is Result.Success -> Timber.d("Sent -> $it")
+                        is Result.Error -> Timber.e("Failed to send -> $it")
+                    }
+                }
+            }
 
             // トーストで結果を表示
             Timber.d(s)

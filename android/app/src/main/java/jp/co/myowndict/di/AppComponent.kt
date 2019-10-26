@@ -4,8 +4,9 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
-import jp.co.myowndict.view.ActivityModule
 import jp.co.myowndict.MyApplication
+import jp.co.myowndict.speechrecognize.ServiceModule
+import jp.co.myowndict.view.ActivityModule
 import javax.inject.Singleton
 
 
@@ -15,7 +16,8 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         AppModule::class,
         ViewModelModule::class,
-        ActivityModule::class
+        ActivityModule::class,
+        ServiceModule::class
     ]
 )
 interface AppComponent : AndroidInjector<MyApplication> {

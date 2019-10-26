@@ -11,11 +11,11 @@ import dagger.Provides
 import jp.co.myowndict.BuildConfig
 import jp.co.myowndict.MyApplication
 import jp.co.myowndict.data.ApiService
-import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
 /**
  * AppModule
