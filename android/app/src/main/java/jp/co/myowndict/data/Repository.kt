@@ -11,6 +11,7 @@ import timber.log.Timber
 import java.net.ConnectException
 import javax.inject.Inject
 import java.lang.Exception
+import java.util.*
 
 class Repository @Inject constructor(
     private val application: MyApplication,
@@ -21,16 +22,39 @@ class Repository @Inject constructor(
     private val errorMessagesAdapter = moshi.adapter(ErrorMessages::class.java)
 
     suspend fun signUp(uuid: String): Result<Token> {
-        return safeApiCall {
+        val result = safeApiCall {
             apiService.signUp(Uuid(uuid))
         }
+
+        if (result is Result.Success) {
+            Token.put(result.data.token)
+        }
+
+        return result
     }
 
     suspend fun signIn(uuid: String): Result<Token> {
-        return safeApiCall {
+        val result = safeApiCall {
             apiService.signIn(Uuid(uuid))
         }
+
+        if (result is Result.Success) {
+            Token.put(result.data.token)
+        }
+
+        return result
     }
+
+    fun getUuid(): String? = sharedPreferences.getString(KEY_TOKEN, null)
+
+    fun saveUuid(uuid: String) {
+        sharedPreferences
+            .edit()
+            .putString(KEY_TOKEN, uuid)
+            .apply()
+    }
+
+    fun getnerateUuid(): String = UUID.randomUUID().toString()
 
     @Suppress("UNCHECKED_CAST")
     private suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): Result<T> {
@@ -63,4 +87,12 @@ class Repository @Inject constructor(
         val cm = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetworkInfo != null
     }
+
+
+    companion object {
+        private const val KEY_TOKEN: String = "TokenString"
+
+    }
 }
+
+
