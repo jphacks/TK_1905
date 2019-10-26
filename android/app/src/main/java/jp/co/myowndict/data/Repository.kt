@@ -21,13 +21,16 @@ class Repository @Inject constructor(
 ) {
     private val errorMessagesAdapter = moshi.adapter(ErrorMessages::class.java)
 
-    suspend fun signUp(uuid: String): Result<Token> {
+    suspend fun signUp(): Result<Token> {
+        val uuid = generateUuid()
+
         val result = safeApiCall {
             apiService.signUp(Uuid(uuid))
         }
 
         if (result is Result.Success) {
-            Token.put(result.data.token)
+            TokenManager.put(result.data.token)
+            saveUuid(uuid)
         }
 
         return result
@@ -39,7 +42,7 @@ class Repository @Inject constructor(
         }
 
         if (result is Result.Success) {
-            Token.put(result.data.token)
+            TokenManager.put(result.data.token)
         }
 
         return result
@@ -60,7 +63,7 @@ class Repository @Inject constructor(
             .apply()
     }
 
-    fun getnerateUuid(): String = UUID.randomUUID().toString()
+    fun generateUuid(): String = UUID.randomUUID().toString()
 
     @Suppress("UNCHECKED_CAST")
     private suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): Result<T> {

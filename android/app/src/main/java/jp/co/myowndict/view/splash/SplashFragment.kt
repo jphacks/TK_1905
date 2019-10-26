@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
 import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
@@ -30,14 +32,38 @@ class SplashFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        observe()
-
-        viewModel.authenticate()
+        if (viewModel.isNewUser()) {
+            signUp()
+        } else {
+            signIn()
+        }
     }
 
-    private fun observe() {
-        viewModel.authenticated.observeNonNull(viewLifecycleOwner) {
+    private fun signUp() {
+        val (onSuccess, onFailure) = viewModel.signUp()
+
+        onSuccess.observe(viewLifecycleOwner, Observer {
             findNavController().navigate(SplashFragmentDirections.actionSplashToMain())
-        }
+        })
+        onFailure.observe(viewLifecycleOwner, Observer {
+            MaterialDialog(requireContext()).show {
+                title(text = "通信エラー")
+                positiveButton(text = "リトライ") { signUp() }
+            }
+        })
+    }
+
+    private fun signIn() {
+        val (onSuccess, onFailure) = viewModel.signIn()
+
+        onSuccess.observe(viewLifecycleOwner, Observer {
+            findNavController().navigate(SplashFragmentDirections.actionSplashToMain())
+        })
+        onFailure.observe(viewLifecycleOwner, Observer {
+            MaterialDialog(requireContext()).show {
+                title(text = "通信エラー")
+                positiveButton(text = "リトライ") { signIn() }
+            }
+        })
     }
 }
