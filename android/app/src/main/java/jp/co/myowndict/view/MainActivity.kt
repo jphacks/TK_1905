@@ -3,6 +3,7 @@ package jp.co.myowndict.view
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
@@ -15,6 +16,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import jp.co.myowndict.R
 import jp.co.myowndict.extensions.observeNonNull
 import jp.co.myowndict.speechrecognize.SpeechRecognizeService
+import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -26,13 +28,19 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MainViewModel by viewModels { viewModelFactory }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         observe()
-        window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        } else {
+            window.navigationBarColor = getColor(R.color.colorPrimary)
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
     }
 
     @NeedsPermission(Manifest.permission.RECORD_AUDIO)
