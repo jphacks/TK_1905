@@ -80,9 +80,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
         Timber.d("service is running")
-        isRunning = true
 
         startForeground(1, notification)
         startListening()
@@ -213,10 +211,5 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
             Timber.d(s)
             restartListeningService()
         }
-    }
-
-    companion object {
-        var isRunning: Boolean = false
-            private set
     }
 }

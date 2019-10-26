@@ -13,13 +13,14 @@ import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentMainBinding
+import jp.co.myowndict.extensions.observeNonNull
 import jp.co.myowndict.view.MainViewModel
 import javax.inject.Inject
 
 class MainFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MainViewModel by activityViewModels { viewModelFactory }
+    private val mainViewModel: MainViewModel by activityViewModels { viewModelFactory }
 
     private val binding by dataBinding<FragmentMainBinding>(R.layout.fragment_main)
 
@@ -43,6 +44,14 @@ class MainFragment : DaggerFragment() {
                 }
             }
         })
+
+        observe()
+    }
+
+    private fun observe() {
+        mainViewModel.isRunning.observeNonNull(viewLifecycleOwner) { isRunning ->
+            if (!isRunning) binding.viewPager.setCurrentItem(0, true)
+        }
     }
 
     class MainFragmentPagerAdapter(
