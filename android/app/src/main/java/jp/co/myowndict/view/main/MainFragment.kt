@@ -11,19 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import androidx.viewpager2.widget.ViewPager2
 import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentMainBinding
-import jp.co.myowndict.model.SpeechEvent
 import jp.co.myowndict.speechrecognize.SpeechRecognizeService
 import jp.co.myowndict.view.startAppSettingActivity
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import permissions.dispatcher.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -59,7 +55,7 @@ class MainFragment : DaggerFragment() {
             }
         })
 
-        viewModel.getSentances()
+        viewModel.getSentences()
     }
 
     @NeedsPermission(Manifest.permission.RECORD_AUDIO)
@@ -119,26 +115,6 @@ class MainFragment : DaggerFragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageRecieveEvent(event: SpeechEvent) {
-        when (event) {
-            is SpeechEvent.OnPartialResult -> event.partialText
-            is SpeechEvent.OnResult -> event.text
-        }
-
-        Timber.d(event.toString())
     }
 
     class MainFragmentPagerAdapter(

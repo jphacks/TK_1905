@@ -1,4 +1,4 @@
-package jp.co.myowndict.view
+package jp.co.myowndict.view.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
