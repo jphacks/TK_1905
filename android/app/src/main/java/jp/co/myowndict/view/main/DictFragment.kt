@@ -2,6 +2,7 @@ package jp.co.myowndict.view.main
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,9 @@ import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentDictBinding
 import jp.co.myowndict.extensions.observeNonNull
+import jp.co.myowndict.model.Sentence
 import jp.co.myowndict.view.MainViewModel
+import java.util.*
 import javax.inject.Inject
 
 class DictFragment : DaggerFragment() {
@@ -25,26 +28,32 @@ class DictFragment : DaggerFragment() {
     private val dictViewModel: DictViewModel by viewModels { viewModelFactory }
     private val binding by dataBinding<FragmentDictBinding>(R.layout.fragment_dict)
     private lateinit var adapter: SentenceAdapter
+    private lateinit var tts: TextToSpeech
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        tts = TextToSpeech(requireContext()) {
+            when (it) {
+                TextToSpeech.SUCCESS -> tts.language = Locale.US
+                else -> Toast.makeText(
+                    context,
+                    R.string.tts_init_error_message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
         binding.viewModel = mainViewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = SentenceAdapter(viewLifecycleOwner,
-            onClick = {},
-            onLongClick = { sentence ->
-                MaterialDialog(requireContext()).show {
-                    title(text = getString(R.string.delete_confirm_message, sentence.contentJp))
-                    positiveButton(text = "OK") { dictViewModel.deleteSentence(sentence) }
-                    negativeButton(text = "NG")
-                }
-            }
+            onClick = { sentence -> speakSentence(sentence) },
+            onLongClick = { sentence -> deleteSentence(sentence) }
         )
         binding.recyclerView.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
@@ -53,6 +62,11 @@ class DictFragment : DaggerFragment() {
         dictViewModel.getSentences()
 
         observe()
+    }
+
+    override fun onDestroy() {
+        tts.shutdown()
+        super.onDestroy()
     }
 
     private fun observe() {
@@ -82,5 +96,18 @@ class DictFragment : DaggerFragment() {
     fun hideTag() {
         if (!isAdded) return
         binding.slideBar.x = binding.root.width.toFloat()
+    }
+
+    private fun speakSentence(sentence: Sentence) {
+        if (tts.isSpeaking) tts.stop()
+        tts.speak(sentence.contentEn, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+
+    private fun deleteSentence(sentence: Sentence) {
+        MaterialDialog(requireContext()).show {
+            title(text = getString(R.string.delete_confirm_message, sentence.contentJp))
+            positiveButton(text = "削除") { dictViewModel.deleteSentence(sentence) }
+            negativeButton(text = "戻る")
+        }
     }
 }
