@@ -1,5 +1,6 @@
 package jp.co.myowndict.view.main
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,5 +23,23 @@ class DictFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    }
+
+    fun startTagAnimation() {
+        if (!isAdded) return
+        ObjectAnimator.ofFloat(
+            binding.tag,
+            "x",
+            binding.root.width.toFloat(),
+            binding.root.width.toFloat() - binding.tag.width
+        ).apply {
+            duration = 300
+            start()
+        }
+    }
+
+    fun hideTag() {
+        if (!isAdded) return
+        binding.tag.x = binding.root.width.toFloat()
     }
 }

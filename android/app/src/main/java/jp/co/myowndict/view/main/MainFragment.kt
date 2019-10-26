@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
@@ -35,8 +36,17 @@ class MainFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.viewPager.adapter = MainFragmentPagerAdapter(this)
-
+        val adapter = MainFragmentPagerAdapter(this)
+        binding.viewPager.adapter = adapter
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    0 -> adapter.onShowDictFragment()
+                    1 -> adapter.onShowRecordingFragment()
+                }
+            }
+        })
         startSpeechRecording()
     }
 
@@ -63,5 +73,23 @@ class MainFragment : DaggerFragment() {
         override fun createFragment(position: Int): Fragment = fragments[position]
 
         override fun getItemCount(): Int = fragments.size
+
+        fun onShowDictFragment() {
+            fragments.forEach { frag ->
+                when (frag) {
+                    is DictFragment -> frag.startTagAnimation()
+                    is RecordingFragment -> frag.hideTag()
+                }
+            }
+        }
+
+        fun onShowRecordingFragment() {
+            fragments.forEach { frag ->
+                when (frag) {
+                    is DictFragment -> frag.hideTag()
+                    is RecordingFragment -> frag.startTagAnimation()
+                }
+            }
+        }
     }
 }
