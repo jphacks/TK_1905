@@ -1,4 +1,4 @@
-package jp.co.taimee.di
+package jp.co.myowndict.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

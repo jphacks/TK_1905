@@ -4,9 +4,8 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
-import jp.co.myowndict.ActivityModule
+import jp.co.myowndict.view.ActivityModule
 import jp.co.myowndict.MyApplication
-import jp.co.taimee.di.ViewModelModule
 import javax.inject.Singleton
 
 

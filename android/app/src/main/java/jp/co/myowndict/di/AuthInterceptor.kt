@@ -1,6 +1,7 @@
 package jp.co.myowndict.di
 
 import jp.co.myowndict.model.Token
+import jp.co.myowndict.model.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 import retrofit2.Invocation
@@ -14,11 +15,11 @@ class AuthInterceptor(
 
         val invocation = request.tag(Invocation::class.java)
         val authAnnotation = invocation?.method()?.getAnnotation(RequireAuth::class.java)
-        val token = Token.get()
+        val token = TokenManager.get()
         if (authAnnotation != null && token != null) {
             request = request
                 .newBuilder()
-                .addHeader("Authorization", "Bearer $token").build()
+                .addHeader("Authorization", "JWT $token").build()
         }
         return chain.proceed(request)
     }
