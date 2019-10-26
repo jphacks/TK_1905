@@ -14,6 +14,9 @@ router = DefaultRouter()
 router.APIRootView = APIRootView
 router.register('users', views.UserViewSet, base_name='user')
 router.register('user/texts', views.UserTextViewSet, base_name='user_text')
+router.register('user/sentences',
+                views.UserSentenceViewSet,
+                base_name='user_sentence')
 
 app_name = 'main'
 urlpatterns = [

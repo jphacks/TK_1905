@@ -42,7 +42,8 @@ class JsonErrorMessageMiddleware(MiddlewareMixin):
                     response.data["error_messages"] = error_messages
                 response.content = json.dumps(response.data)
         except Exception:
-            traceback.print_exc()
+            # traceback.print_exc()
+            pass
         return response
 
 
