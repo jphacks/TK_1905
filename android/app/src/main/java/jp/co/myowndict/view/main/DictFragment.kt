@@ -38,13 +38,19 @@ class DictFragment : DaggerFragment() {
             // OnClick
         }
         binding.recyclerView.adapter = adapter
+        binding.refreshLayout.setOnRefreshListener {
+            dictViewModel.getSentences()
+        }
         dictViewModel.getSentences()
 
         observe()
     }
 
     private fun observe() {
-        dictViewModel.sentences.observeNonNull(viewLifecycleOwner) { adapter.submitList(it) }
+        dictViewModel.sentences.observeNonNull(viewLifecycleOwner) {
+            adapter.submitList(it)
+            binding.refreshLayout.isRefreshing = false
+        }
     }
 
     fun startTagAnimation() {
