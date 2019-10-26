@@ -25,7 +25,7 @@ class MainFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val adapter = MainFragmentPagerAdapter(this).apply { onShowDictFragment() }
+        val adapter = MainFragmentPagerAdapter(this)
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
