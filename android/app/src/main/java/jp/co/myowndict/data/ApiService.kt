@@ -20,4 +20,7 @@ interface ApiService {
     // Auth
     @POST("/api/register/uuid/")
     suspend fun signUp(@Body uuid: Uuid): Response<Token>
+
+    @POST("/api/auth/uuid/")
+    suspend fun signIn(@Body uuid: Uuid): Response<Token>
 }
