@@ -1,3 +1,4 @@
 <resources>
+    <string name="spoken_count">%1$s回</string>
     <string name="app_name">RecMe</string>
 </resources>
