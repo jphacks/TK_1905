@@ -35,11 +35,11 @@ class Repository @Inject constructor(
                 val errorMessage = runCatching {
                     responseBodyString?.let {
                         errorMessagesAdapter.fromJson(it)
-                    }?.errors.toString()
+                    }?.errorMessages?.fold("") { bodyString, string -> bodyString + string }
                 }.getOrElse {
                     "Unknown Exception"
                 }
-                throw HandledException(errorMessage, response.code())
+                throw HandledException(errorMessage ?: "", response.code())
             }
         } catch (e: Exception) {
             Timber.e(e)
