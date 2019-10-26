@@ -1,6 +1,8 @@
 package jp.co.myowndict.model
 
-class Token {
+data class Token(
+    val token: String
+) {
     companion object {
         private var token: String? = null
 
