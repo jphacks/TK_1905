@@ -193,20 +193,21 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
         }
 
         override fun onResults(results: Bundle?) {
-            val candidates = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            results ?: return
+            val candidates = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            val confidences = results.getFloatArray(SpeechRecognizer.CONFIDENCE_SCORES)
             val s: String? = candidates?.first()
+            val confidenceScore = confidences?.first()
 
             s?.let {
-                launch {
-                    when (repository.sendText(it)) {
-                        is Result.Success -> Timber.d("Sent -> $it")
-                        is Result.Error -> Timber.e("Failed to send -> $it")
-                    }
+                Timber.d(it)
+                Timber.d("$confidenceScore")
+                if (confidenceScore!! < MIN_CONFIDENCE_SCORE) {
+                    Timber.w("Result was ignored by low confidence score.")
+                    EventBus.getDefault().post(SpeechEvent.OnResult(it))
+                } else {
+                    EventBus.getDefault().post(SpeechEvent.OnResult(it))
                 }
-            }
-
-            s?.let {
-                EventBus.getDefault().post(SpeechEvent.OnResult(it))
             }
 
             // トーストで結果を表示
@@ -218,5 +219,6 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
     companion object {
         var isRunning: Boolean = false
             private set
+        private const val MIN_CONFIDENCE_SCORE = 0.9
     }
 }
