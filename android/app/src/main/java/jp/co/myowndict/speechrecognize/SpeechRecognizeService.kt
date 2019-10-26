@@ -204,7 +204,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                 Timber.d("$confidenceScore")
                 if (confidenceScore!! < MIN_CONFIDENCE_SCORE) {
                     Timber.w("Result was ignored by low confidence score.")
-                    EventBus.getDefault().post(SpeechEvent.OnResult(it))
+                    EventBus.getDefault().post(SpeechEvent.OnIgnored(it))
                 } else {
                     EventBus.getDefault().post(SpeechEvent.OnResult(it))
                 }

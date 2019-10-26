@@ -81,9 +81,11 @@ class RecordingFragment : DaggerFragment() {
                 viewModel.addResult(event.text)
                 viewModel.sendSpeechText(event.text)
             }
+            is SpeechEvent.OnIgnored -> {
+                // 信頼度によって棄却された場合の処理
+            }
         }
 
         Timber.d(event.toString())
     }
-
 }
