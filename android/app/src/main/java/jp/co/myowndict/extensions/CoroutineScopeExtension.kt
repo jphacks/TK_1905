@@ -1,12 +1,12 @@
 package jp.co.myowndict.extensions
 
 import androidx.lifecycle.MutableLiveData
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 fun CoroutineScope.launchWithProgress(
     progressLiveData: MutableLiveData<Boolean>,

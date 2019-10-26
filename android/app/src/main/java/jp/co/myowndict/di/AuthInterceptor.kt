@@ -1,6 +1,5 @@
 package jp.co.myowndict.di
 
-import jp.co.myowndict.model.Token
 import jp.co.myowndict.model.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Response

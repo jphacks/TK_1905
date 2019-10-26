@@ -4,10 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
 import jp.co.myowndict.data.Repository
 import jp.co.myowndict.extensions.notify
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 import jp.co.myowndict.model.Result
 import jp.co.myowndict.view.ApiFragmentViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(
     private val repository: Repository
