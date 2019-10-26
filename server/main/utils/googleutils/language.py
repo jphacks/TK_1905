@@ -22,8 +22,8 @@ def _split_text_with_rules(tokens,
             sentence = ""
             end_flag = False
 
-        print(part_of_speech_tag.name, content,
-              token.dependency_edge.head_token_index)
+        # print(part_of_speech_tag.name, content,
+        #       token.dependency_edge.head_token_index)
         sentence += content
         for eof_role in eof_roles:
             if eof_role in content:
