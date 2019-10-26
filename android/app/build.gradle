@@ -26,6 +26,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -89,6 +92,8 @@ dependencies {
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.1"
 
     implementation "com.romandanylyk:pageindicatorview:1.0.3"
+
+    implementation 'com.github.wada811:DataBinding-ktx:2.2.0'
 
 //    debugImplementation "com.willowtreeapps.hyperion:hyperion-core:0.9.27"
 //    debugImplementation "com.willowtreeapps.hyperion:hyperion-attr:0.9.27"
