@@ -124,7 +124,7 @@ JWT_AUTH = {
     'JWT_LEEWAY':
     0,
     'JWT_EXPIRATION_DELTA':
-    datetime.timedelta(days=1),
+    datetime.timedelta(days=3),
     'JWT_AUDIENCE':
     None,
     'JWT_ISSUER':
