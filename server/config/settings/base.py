@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     'corsheaders',
+    'django_celery_beat',
+    'django_celery_results',
     'main',
 ]
 
@@ -273,3 +275,7 @@ CORS_ORIGIN_WHITELIST = (
 
 # Compress
 COMPRESS_OFFLINE = True
+
+# CELERY
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/1')

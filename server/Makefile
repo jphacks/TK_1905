@@ -15,3 +15,6 @@ logs:
 
 kill:
 	docker kill $(IMAGE)
+
+celery:
+	watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery -A config worker
