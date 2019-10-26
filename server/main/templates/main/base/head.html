@@ -1,0 +1,20 @@
+{% load compress %}
+{% load common %}
+
+{% if not title %}{% set title = ''%}{% endif %}
+{% if not description %}{% set description = '' %}{% endif %}
+{% if not og_image %}{% set og_image = '' %}{% endif %}
+{% if not og_type %}{% set og_type = 'article' %}{% endif %}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>{{ title }}</title>
+<meta name="description" content="{{ description }}" />
+<meta name="keywords" content="service,{{ keywords }}" />
+<meta property="og:title" content="{{ title }}" />
+<meta property="og:description" content="{{ description }}" />
+<meta property="og:image" content="{{ og_image }}" />
+<meta property="og:type" content="{{ og_type }}" />
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="{{ twitter_site }}" />

@@ -1,0 +1,30 @@
+body {
+    background: #FFF8EA;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+main {
+    background: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    margin: 0;
+
+    * {
+        margin: 0;
+    }
+}
+
+footer {
+    margin: 0;
+    padding: 0;
+    color: #BDBDBD;
+
+    a {
+        color: #BDBDBD;
+
+        :hover {
+            color: #E6E6E6;
+            text-decoration: none;
+        }
+    }
+}

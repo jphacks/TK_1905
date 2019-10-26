@@ -1,0 +1,25 @@
+{% if page_obj %}
+<div class="paging-wrapper text-center row mt-5">
+	<div class="arrow col-4 text-right">
+		{% if page_obj.has_previous %}
+		<a href="?page={{ page_obj.previous_page_number }}">
+			<button class="btn btn-info"><i class="fas fa-arrow-circle-left"></i></button>
+		</a>
+		{% else %}
+		<button class="dead-btn btn"><i class="fas fa-arrow-circle-left"></i></button>
+		{% endif %}
+	</div>
+	<div class="page-num col-4">
+		- {{ page_obj.number }} -
+	</div>
+	<div class="arrow col-4 text-left">
+		{% if page_obj.has_next %}
+		<a href="?page={{ page_obj.next_page_number }}">
+			<button class="btn btn-info"><i class="fas fa-arrow-circle-right"></i></button>
+		</a>
+		{% else %}
+		<button class="dead-btn btn"><i class="fas fa-arrow-circle-right"></i></button>
+		{% endif %}
+	</div>
+</div>
+{% endif %}
