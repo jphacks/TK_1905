@@ -13,6 +13,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.wada811.databinding.dataBinding
@@ -60,6 +61,13 @@ class MainFragment : DaggerFragment() {
         mainViewModel.isRunning.observeNonNull(viewLifecycleOwner) { isRunning ->
             if (!isRunning) binding.viewPager.setCurrentItem(0, true)
         }
+        mainViewModel.showQuizEvent.observeNonNull(viewLifecycleOwner) {
+            showQuizFragment()
+        }
+    }
+
+    private fun showQuizFragment() {
+        findNavController().navigate(MainFragmentDirections.actionMainToQuiz())
     }
 
     class MainFragmentPagerAdapter(

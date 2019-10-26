@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector
 import jp.co.myowndict.view.main.DictFragment
 import jp.co.myowndict.view.main.MainFragment
 import jp.co.myowndict.view.main.RecordingFragment
+import jp.co.myowndict.view.quiz.QuizFragment
 import jp.co.myowndict.view.splash.SplashFragment
 
 @Suppress("unused")
@@ -21,4 +22,7 @@ internal abstract class FragmentModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeRecordingFragment(): RecordingFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeQuizFragment(): QuizFragment
 }
