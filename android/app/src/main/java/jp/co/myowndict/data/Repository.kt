@@ -26,6 +26,12 @@ class Repository @Inject constructor(
         }
     }
 
+    suspend fun signIn(uuid: String): Result<Token> {
+        return safeApiCall {
+            apiService.signIn(Uuid(uuid))
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     private suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): Result<T> {
         return try {
