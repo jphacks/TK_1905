@@ -1,16 +1,15 @@
 package jp.co.myowndict.view.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wada811.databinding.dataBinding
-
+import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentMainBinding
 
-class MainFragment : Fragment() {
+class MainFragment : DaggerFragment() {
 
     private val binding by dataBinding<FragmentMainBinding>(R.layout.fragment_main)
 
