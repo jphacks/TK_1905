@@ -10,7 +10,8 @@ import jp.co.myowndict.view.common.SimpleDiffUtil
 
 class SentenceAdapter(
     lifecycleOwner: LifecycleOwner,
-    private val onClick: ((Sentence) -> Unit)?
+    private val onClick: ((Sentence) -> Unit),
+    private val onLongClick: ((Sentence) -> Unit)
 ) : DataBoundListAdapter<Sentence, ItemSentenceBinding>(lifecycleOwner, SimpleDiffUtil()) {
 
     override fun createBinding(parent: ViewGroup): ItemSentenceBinding =
@@ -19,7 +20,11 @@ class SentenceAdapter(
     override fun bind(binding: ItemSentenceBinding, item: Sentence) {
         binding.sentence = item
         binding.root.setOnClickListener {
-            onClick?.invoke(item)
+            onClick(item)
+        }
+        binding.root.setOnLongClickListener {
+            onLongClick(item)
+            true
         }
     }
 }
