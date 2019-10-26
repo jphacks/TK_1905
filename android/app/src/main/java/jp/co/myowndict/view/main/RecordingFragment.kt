@@ -81,7 +81,7 @@ class RecordingFragment : DaggerFragment() {
         EventBus.getDefault().unregister(this)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     @Suppress("unused")
     fun onMessageReceiveEvent(event: SpeechEvent) {
         when (event) {

@@ -150,7 +150,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
             partialResults ?: return
             partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 ?.takeIf { it.isNotEmpty() }?.let {
-                    EventBus.getDefault().post(SpeechEvent.OnPartialResult(it.first()))
+                    EventBus.getDefault().postSticky(SpeechEvent.OnPartialResult(it.first()))
                 }
         }
 
@@ -202,9 +202,9 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                 Timber.d("$confidenceScore")
                 if (confidenceScore!! < MIN_CONFIDENCE_SCORE) {
                     Timber.w("Result was ignored by low confidence score.")
-                    EventBus.getDefault().post(SpeechEvent.OnIgnored(it))
+                    EventBus.getDefault().postSticky(SpeechEvent.OnIgnored(it))
                 } else {
-                    EventBus.getDefault().post(SpeechEvent.OnResult(it))
+                    EventBus.getDefault().postSticky(SpeechEvent.OnResult(it))
                 }
             }
 
