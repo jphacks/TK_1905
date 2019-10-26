@@ -1,8 +1,10 @@
 import jwt
+import json
 import traceback
 
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
+from rest_framework.utils.serializer_helpers import ReturnDict
 
 from main.models import User
 
@@ -21,6 +23,26 @@ class RequestHandleMiddleware(MiddlewareMixin):
                 'status_code: %s' % str(response.status_code)
             ])
             print(message)
+        return response
+
+
+class JsonErrorMessageMiddleware(MiddlewareMixin):
+    def process_response(self, request, response):
+        try:
+            if response.status_code >= 400:
+                if type(response.data) in [ReturnDict, dict]:
+                    error_messages = []
+                    for k, v in response.data.items():
+                        if type(v) is list:
+                            error_messages.append(f"{v[0]}({k})")
+                        elif k == "detail":
+                            error_messages.append(f"{v}")
+                        else:
+                            error_messages.append(f"{k}: {v}")
+                    response.data["error_messages"] = error_messages
+                response.content = json.dumps(response.data)
+        except Exception:
+            traceback.print_exc()
         return response
 
 
