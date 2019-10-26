@@ -25,7 +25,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 abstract class AppModule {
     @Module
     companion object {
-        private const val apiUrl = ""
+        private const val apiUrl = "https://api.myowndict.volare.site"
 
         @Provides
         @Singleton
@@ -74,8 +74,6 @@ abstract class AppModule {
                 .addInterceptor { chain ->
                     val original = chain.request()
                     val request = with(original.newBuilder()) {
-                        header("X-Device-Type", "android")
-                        header("X-App-Version", BuildConfig.VERSION_NAME)
                         method(original.method(), original.body())
                     }.build()
                     chain.proceed(request)

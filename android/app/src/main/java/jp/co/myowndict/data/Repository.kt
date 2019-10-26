@@ -29,7 +29,7 @@ class Repository @Inject constructor(
         }
 
         if (result is Result.Success) {
-            Token.put(result.data.token)
+            TokenManager.put(result.data.token)
             saveUuid(uuid)
         }
 
@@ -42,7 +42,7 @@ class Repository @Inject constructor(
         }
 
         if (result is Result.Success) {
-            Token.put(result.data.token)
+            TokenManager.put(result.data.token)
         }
 
         return result

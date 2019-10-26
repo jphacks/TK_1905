@@ -26,12 +26,12 @@ class SplashViewModel @Inject constructor(
         return Pair(onSuccess, onFailure)
     }
 
-    fun signIn(uuid: String): Pair<LiveEvent<Unit>, LiveEvent<Unit>> {
+    fun signIn(): Pair<LiveEvent<Unit>, LiveEvent<Unit>> {
         val onSuccess = LiveEvent<Unit>()
         val onFailure = LiveEvent<Unit>()
 
         viewModelScope.launch {
-            when (val result = repository.signIn(uuid)) {
+            when (val result = repository.signIn(repository.getUuid()!!)) {
                 is Result.Success -> onSuccess.notify()
                 is Result.Error -> onFailure.notify()
             }
