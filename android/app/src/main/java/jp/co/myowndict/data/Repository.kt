@@ -59,6 +59,12 @@ class Repository @Inject constructor(
         }
     }
 
+    suspend fun deleteSentence(sentence: String): Result<Unit> {
+        return safeApiCall {
+            apiService.deleteSentence(sentence)
+        }
+    }
+
     fun getUuid(): String? = sharedPreferences.getString(KEY_TOKEN, null)
 
     fun saveUuid(uuid: String) {
