@@ -1,0 +1,72 @@
+{% load static %}
+{% load compress %}
+{% load sass_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+  {% include 'main/base/head.html' %}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  {% compress css %}
+  <link rel="stylesheet" href="{% static 'main/css/base/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% sass_src 'main/css/base.scss' %}">
+  {% block css %}
+    {{ css }}
+  {% endblock %}
+  {% endcompress %}
+  {% block raw_css %}
+    {{ raw_css }}
+  {% endblock %}
+  {% if not debug and not ignore_google_analytics %}
+  {% include 'main/common/google_analytics.html' %}
+  {% endif %}
+</head>
+<body>
+
+  {% block header %}
+    {{ header }}
+    <header class="bg-dark">
+      {% include 'main/base/header.html' %}
+    </header>
+  {% endblock %}
+
+  {% block main %}
+    {{ main }}
+    <main class="mx-auto text-center">
+      {% if messages %}
+      <div class="message">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-center mb-0 rounded-0 alert-dismissible fade show">
+          {{ message }}
+          <button class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% block content %}
+        {{ content }}
+      {% endblock %}
+    </main>
+  {% endblock %}
+
+  {% block footer %}
+   {{ footer }}
+    <footer class="bg-dark">
+      {% include 'main/base/footer.html' %}
+    </footer>
+  {% endblock %}
+
+
+  {% compress js %}
+  <script src="{% static 'main/js/base/jquery.min.js' %}"></script>
+  <script src="{% static 'main/js/base/bootstrap.min.js' %}"></script>
+  <script src="{% static 'main/js/base/vue.min.js' %}"></script>
+  {% block js %}
+    {{ js }}
+  {% endblock %}
+  {% endcompress %}
+  {% block raw_js %}
+    {{ raw_js }}
+  {% endblock %}
+
+</body>
+</html>

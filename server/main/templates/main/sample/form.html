@@ -1,0 +1,12 @@
+{% extends "main/base/base.html" %}
+
+{% block content %}
+<h1>form</h1>
+<form method="post" class="form-signin mx-auto">
+	{% csrf_token %}
+	{{ form.formset.management_form }}
+	{{ form.as_p }}
+	{{ form.formset.as_p }}
+	<button type="submit" class="button font-weight-bold">Submit</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+uwsgi = "*"
+python-dotenv = "*"
+djangorestframework = "*"
+djangorestframework-jwt = "*"
+django-rest-swagger = "*"
+django-filter = "*"
+django-compressor = "*"
+pillow = "*"
+channels-redis = "*"
+channels = "*"
+markdown = "*"
+daphne = "*"
+django-cors-headers = "*"
+django-sass-processor = "*"
+libsass = "*"
+slackweb = "*"
+numpy = "*"
+mysqlclient = "*"
+
+[dev-packages]
+httpie = "*"
+"flake8" = "*"
+yapf = "*"
+
+[requires]
+python_version = "3.6"

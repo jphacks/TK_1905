@@ -1,0 +1,9 @@
+{% extends "main/base/base.html" %}
+{% load common %}
+
+{% block content %}
+<h1>Hello, World</h1>
+{% if logged_in_user %}
+<p>Hi, {{ logged_in_user.name }}!</p>
+{% endif %}
+{% endblock content %}
