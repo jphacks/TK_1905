@@ -28,10 +28,10 @@ class DictFragment : DaggerFragment() {
     fun startTagAnimation() {
         if (!isAdded) return
         ObjectAnimator.ofFloat(
-            binding.tag,
+            binding.slideBar,
             "x",
             binding.root.width.toFloat(),
-            binding.root.width.toFloat() - binding.tag.width
+            binding.root.width.toFloat() - binding.slideBar.width
         ).apply {
             duration = 300
             start()
@@ -40,6 +40,6 @@ class DictFragment : DaggerFragment() {
 
     fun hideTag() {
         if (!isAdded) return
-        binding.tag.x = binding.root.width.toFloat()
+        binding.slideBar.x = binding.root.width.toFloat()
     }
 }

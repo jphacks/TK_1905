@@ -27,7 +27,7 @@ class RecordingFragment : DaggerFragment() {
 
     fun startTagAnimation() {
         if (!isAdded) return
-        ObjectAnimator.ofFloat(binding.tag, "x", -binding.tag.width.toFloat(), 0f).apply {
+        ObjectAnimator.ofFloat(binding.slideBar, "x", -binding.slideBar.width.toFloat(), 0f).apply {
             duration = 300
             start()
         }
@@ -35,6 +35,6 @@ class RecordingFragment : DaggerFragment() {
 
     fun hideTag() {
         if (!isAdded) return
-        binding.tag.x = -binding.tag.width.toFloat()
+        binding.slideBar.x = -binding.slideBar.width.toFloat()
     }
 }
