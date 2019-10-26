@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import jp.co.myowndict.view.main.DictViewModel
 import jp.co.myowndict.view.main.RecordingViewModel
 
 /**
@@ -15,6 +16,11 @@ import jp.co.myowndict.view.main.RecordingViewModel
 abstract class ViewModelModule {
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DictViewModel::class)
+    abstract fun bindDictViewModel(viewModel: DictViewModel): ViewModel
 
     @Binds
     @IntoMap

@@ -6,9 +6,7 @@ import jp.co.myowndict.model.SpeechText
 import jp.co.myowndict.model.Token
 import jp.co.myowndict.model.Uuid
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
     // Auth
@@ -25,4 +23,8 @@ interface ApiService {
     @RequireAuth
     @GET("/api/user/sentences/")
     suspend fun getSentences(): Response<SentenceContainer>
+
+    @RequireAuth
+    @DELETE("/api/user/sentences/{id}/")
+    suspend fun deleteSentence(@Path("id") sentence: String): Response<Unit>
 }

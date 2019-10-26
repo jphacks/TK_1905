@@ -11,7 +11,7 @@ import jp.co.myowndict.view.ApiFragmentViewModel
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
+class DictViewModel @Inject constructor(
     private val repository: Repository
 ) : ApiFragmentViewModel() {
     private val sentencesLiveData: MutableLiveData<List<Sentence>> = MutableLiveData()
