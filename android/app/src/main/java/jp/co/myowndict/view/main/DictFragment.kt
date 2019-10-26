@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.wada811.databinding.dataBinding
@@ -29,6 +31,14 @@ class DictFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.getSentences()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.rootView) { v, insets ->
+            v.updatePadding(
+                bottom = insets.systemWindowInsetBottom,
+                top = insets.systemWindowInsetTop
+            )
+            insets
+        }
     }
 
     fun startTagAnimation() {

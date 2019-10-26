@@ -11,7 +11,9 @@
 
         <!-- Optional, if drawing behind the status bar too -->
         <item name="android:statusBarColor">
-            #dd000000
+            @android:color/transparent
         </item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 </resources>
