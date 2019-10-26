@@ -1,6 +1,7 @@
 package jp.co.myowndict.data
 
 import jp.co.myowndict.di.RequireAuth
+import jp.co.myowndict.model.SentenceContainer
 import jp.co.myowndict.model.SpeechText
 import jp.co.myowndict.model.Token
 import jp.co.myowndict.model.Uuid
@@ -23,5 +24,5 @@ interface ApiService {
 
     @RequireAuth
     @GET("/api/user/sentences/")
-    suspend fun getSentences(): Response<Unit>
+    suspend fun getSentences(): Response<SentenceContainer>
 }
