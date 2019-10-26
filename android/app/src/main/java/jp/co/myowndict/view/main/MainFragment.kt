@@ -1,5 +1,6 @@
 package jp.co.myowndict.view.main
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
@@ -11,14 +12,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import androidx.viewpager2.widget.ViewPager2
 import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentMainBinding
 import jp.co.myowndict.speechrecognize.SpeechRecognizeService
+import jp.co.myowndict.view.startAppSettingActivity
+import permissions.dispatcher.*
 import timber.log.Timber
 import javax.inject.Inject
 
+@RuntimePermissions
 class MainFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -36,12 +43,23 @@ class MainFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.viewPager.adapter = MainFragmentPagerAdapter(this)
-
+        startSpeechRecordingWithPermissionCheck()
+        val adapter = MainFragmentPagerAdapter(this)
+        binding.viewPager.adapter = adapter
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    0 -> adapter.onShowDictFragment()
+                    1 -> adapter.onShowRecordingFragment()
+                }
+            }
+        })
         startSpeechRecording()
     }
 
-    private fun startSpeechRecording() {
+    @NeedsPermission(Manifest.permission.RECORD_AUDIO)
+    fun startSpeechRecording() {
         speechService = Intent(requireContext(), SpeechRecognizeService::class.java)
         speechService.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
         speechService.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -58,6 +76,49 @@ class MainFragment : DaggerFragment() {
         }
     }
 
+    @OnShowRationale(Manifest.permission.RECORD_AUDIO)
+    fun showRationaleForContacts(request: PermissionRequest) {
+        MaterialDialog(requireContext()).show {
+            title(text = "マイクへのアクセスを許可してください")
+            message(text = "録音を開始するには，マイクへのアクセスを許可する必要があります")
+            positiveButton(text = "OK") { request.proceed() }
+            lifecycleOwner(viewLifecycleOwner)
+            cancelable(false)
+        }
+    }
+
+    @OnPermissionDenied(Manifest.permission.RECORD_AUDIO)
+    fun onContactsDenied() {
+        MaterialDialog(requireContext()).show {
+            message(text = "録音を開始するには，マイクへのアクセスを許可する必要があります")
+            positiveButton(text = "OK")
+            lifecycleOwner(viewLifecycleOwner)
+            cancelable(false)
+        }
+    }
+
+    @OnNeverAskAgain(Manifest.permission.RECORD_AUDIO)
+    fun onContactsNeverAskAgain() {
+        MaterialDialog(requireContext()).show {
+            message(text = "録音を開始するには，マイクへのアクセスを許可する必要があります。設定画面を開きますか？")
+            positiveButton(text = "OK") {
+                startAppSettingActivity()
+            }
+            negativeButton(text = "戻る")
+            lifecycleOwner(viewLifecycleOwner)
+            cancelable(false)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
     class MainFragmentPagerAdapter(
         parentFragment: Fragment
     ) : FragmentStateAdapter(parentFragment) {
@@ -66,5 +127,23 @@ class MainFragment : DaggerFragment() {
         override fun createFragment(position: Int): Fragment = fragments[position]
 
         override fun getItemCount(): Int = fragments.size
+
+        fun onShowDictFragment() {
+            fragments.forEach { frag ->
+                when (frag) {
+                    is DictFragment -> frag.startTagAnimation()
+                    is RecordingFragment -> frag.hideTag()
+                }
+            }
+        }
+
+        fun onShowRecordingFragment() {
+            fragments.forEach { frag ->
+                when (frag) {
+                    is DictFragment -> frag.hideTag()
+                    is RecordingFragment -> frag.startTagAnimation()
+                }
+            }
+        }
     }
 }
