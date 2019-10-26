@@ -13,7 +13,6 @@ import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentSplashBinding
-import jp.co.myowndict.extensions.observeNonNull
 import javax.inject.Inject
 
 class SplashFragment : DaggerFragment() {

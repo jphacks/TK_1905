@@ -3,8 +3,6 @@ package jp.co.myowndict.view
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CancellationException
-import timber.log.Timber
 
 /**
  * ApiFragmentViewModel
