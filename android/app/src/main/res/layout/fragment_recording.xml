@@ -57,10 +57,12 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_stop"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
-
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            app:maxImageSize="60dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
