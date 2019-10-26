@@ -18,7 +18,7 @@ class AuthInterceptor(
         if (authAnnotation != null && token != null) {
             request = request
                 .newBuilder()
-                .addHeader("Authorization", "Bearer $token").build()
+                .addHeader("Authorization", "JWT $token").build()
         }
         return chain.proceed(request)
     }

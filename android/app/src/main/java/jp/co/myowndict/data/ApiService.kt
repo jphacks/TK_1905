@@ -25,6 +25,7 @@ interface ApiService {
     @POST("/api/auth/uuid/")
     suspend fun signIn(@Body uuid: Uuid): Response<Token>
 
+    @RequireAuth
     @POST("/api/user/texts/")
     suspend fun sendText(@Body text: SpeechText): Response<Unit>
 }
