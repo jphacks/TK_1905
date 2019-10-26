@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     'corsheaders',
+    'django_celery_beat',
+    'django_celery_results',
     'main',
 ]
 
@@ -124,7 +126,7 @@ JWT_AUTH = {
     'JWT_LEEWAY':
     0,
     'JWT_EXPIRATION_DELTA':
-    datetime.timedelta(days=1),
+    datetime.timedelta(days=3),
     'JWT_AUDIENCE':
     None,
     'JWT_ISSUER':
@@ -273,3 +275,7 @@ CORS_ORIGIN_WHITELIST = (
 
 # Compress
 COMPRESS_OFFLINE = True
+
+# CELERY
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/1')

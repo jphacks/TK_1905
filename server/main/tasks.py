@@ -1,0 +1,18 @@
+from celery import shared_task
+
+from main.models import UserText, UserSentence, Sentence
+from main.utils import split_text, translate
+
+
+@shared_task
+def split_and_register_sentences(text_id):
+    user_text = UserText.objects.get(id=text_id)
+    sentences = split_text(user_text.text.content)
+    for sentence_str in sentences:
+        sentence = Sentence.objects.filter(content_jp=sentence_str).first()
+        if sentence is None:
+            sentence_en = translate(sentence_str)
+            sentence = Sentence.objects.create(content_jp=sentence_str,
+                                               content_en=sentence_en)
+        UserSentence.objects.create(text=user_text, sentence=sentence)
+    return True

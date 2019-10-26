@@ -24,11 +24,18 @@ slackweb = "*"
 numpy = "*"
 mysqlclient = "*"
 google-cloud-translate = "==1.7.0"
+google-cloud-language = "*"
+celery = "*"
+django-celery-results = "*"
+redis = "*"
+django-redis = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 httpie = "*"
 "flake8" = "*"
 yapf = "*"
+watchdog = "*"
 
 [requires]
 python_version = "3.6"
