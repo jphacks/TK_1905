@@ -36,9 +36,9 @@ class RecordingFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.fab.setOnClickListener { mainViewModel.stopRecording() }
         binding.also {
             it.viewModel = viewModel
-            it.lifecycleOwner = viewLifecycleOwner
         }
     }
 
@@ -76,11 +76,7 @@ class RecordingFragment : DaggerFragment() {
     fun onMessageReceiveEvent(event: SpeechEvent) {
         when (event) {
             is SpeechEvent.OnPartialResult -> viewModel.updatePartialResult(event.partialText)
-            is SpeechEvent.OnResult -> {
-                viewModel.clearPartialResult()
-                viewModel.addResult(event.text)
-                viewModel.sendSpeechText(event.text)
-            }
+            is SpeechEvent.OnResult -> viewModel.addResult(event.text)
         }
 
         Timber.d(event.toString())
