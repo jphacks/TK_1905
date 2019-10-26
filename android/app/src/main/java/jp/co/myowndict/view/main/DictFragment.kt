@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.afollestad.materialdialogs.MaterialDialog
 import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
@@ -34,9 +36,16 @@ class DictFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = SentenceAdapter(viewLifecycleOwner) {
-            // OnClick
-        }
+        adapter = SentenceAdapter(viewLifecycleOwner,
+            onClick = {},
+            onLongClick = { sentence ->
+                MaterialDialog(requireContext()).show {
+                    title(text = getString(R.string.delete_confirm_message, sentence.contentJp))
+                    positiveButton(text = "OK") { dictViewModel.deleteSentence(sentence) }
+                    negativeButton(text = "NG")
+                }
+            }
+        )
         binding.recyclerView.adapter = adapter
         binding.refreshLayout.setOnRefreshListener {
             dictViewModel.getSentences()
@@ -50,6 +59,10 @@ class DictFragment : DaggerFragment() {
         dictViewModel.sentences.observeNonNull(viewLifecycleOwner) {
             adapter.submitList(it)
             binding.refreshLayout.isRefreshing = false
+        }
+        dictViewModel.deleteEvent.observeNonNull(viewLifecycleOwner) {
+            // とりあえずToast
+            Toast.makeText(context, "削除しました", Toast.LENGTH_SHORT).show()
         }
     }
 
