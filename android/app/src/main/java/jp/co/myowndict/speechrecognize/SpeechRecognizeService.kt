@@ -7,7 +7,9 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
+import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.widget.Toast
@@ -16,7 +18,7 @@ import androidx.core.app.NotificationCompat
 import timber.log.Timber
 
 class SpeechRecognizeService : Service() {
-    private var speechRecognizeListener: SpeechRecognizer? = null
+    private var speechRecognizer: SpeechRecognizer? = null
     private lateinit var notification: Notification
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -76,13 +78,15 @@ class SpeechRecognizeService : Service() {
             }
         }).start()
 
+        startListening()
+
         return START_STICKY
     }
 
     private fun startListening() {
         try {
-            if (speechRecognizeListener == null) {
-                speechRecognizeListener = SpeechRecognizer.createSpeechRecognizer(this)
+            if (speechRecognizer == null) {
+                speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
                 if (!SpeechRecognizer.isRecognitionAvailable(applicationContext)) {
                     Toast.makeText(
                         applicationContext, "音声認識が使えません",
@@ -90,22 +94,98 @@ class SpeechRecognizeService : Service() {
                     ).show()
                     return
                 }
-                speechRecognizeListener!!.setRecognitionListener(SpeechRecognizeListener())
+                speechRecognizer!!.setRecognitionListener(SpeechRecognizeListener())
             }
             // インテントの作成
-            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-            // 言語モデル指定
-            intent.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH
-            )
-            speechRecognizeListener!!.startListening(intent)
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).also {
+                // 言語モデル指定
+                it.putExtra(
+                    RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH
+                )
+                it.putExtra(
+                    RecognizerIntent.EXTRA_LANGUAGE,
+                    "ja_JP"
+                )
+            }
+
+            speechRecognizer!!.startListening(intent)
         } catch (ex: Exception) {
             Toast.makeText(
                 applicationContext, "startListening()でエラーが起こりました",
                 Toast.LENGTH_LONG
             ).show()
             return
+        }
+    }
+
+    private fun stopListening() {
+        if (speechRecognizer != null) speechRecognizer?.destroy()
+        speechRecognizer = null
+    }
+
+    private fun restartListeningService() {
+        stopListening()
+        startListening()
+    }
+
+    inner class SpeechRecognizeListener : RecognitionListener {
+        override fun onReadyForSpeech(params: Bundle?) {
+            Timber.d("話してください")
+        }
+
+        override fun onRmsChanged(rmsdB: Float) {
+        }
+
+        override fun onBufferReceived(buffer: ByteArray?) {
+        }
+
+        override fun onPartialResults(partialResults: Bundle?) {
+        }
+
+        override fun onEvent(eventType: Int, params: Bundle?) {
+        }
+
+        override fun onBeginningOfSpeech() {
+        }
+
+        override fun onEndOfSpeech() {
+        }
+
+        override fun onError(error: Int) {
+            var reason = ""
+            when (error) {
+                // Audio recording error
+                SpeechRecognizer.ERROR_AUDIO -> reason = "ERROR_AUDIO"
+                // Other client side errors
+                SpeechRecognizer.ERROR_CLIENT -> reason = "ERROR_CLIENT"
+                // Insufficient permissions
+                SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> reason =
+                    "ERROR_INSUFFICIENT_PERMISSIONS"
+                // 	Other network related errors
+                SpeechRecognizer.ERROR_NETWORK -> reason = "ERROR_NETWORK"
+                // Network operation timed out
+                SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> reason = "ERROR_NETWORK_TIMEOUT"
+                // No recognition result matched
+                SpeechRecognizer.ERROR_NO_MATCH -> reason = "ERROR_NO_MATCH"
+                // RecognitionService busy
+                SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> reason = "ERROR_RECOGNIZER_BUSY"
+                // Server sends error status
+                SpeechRecognizer.ERROR_SERVER -> reason = "ERROR_SERVER"
+                // No speech input
+                SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> reason = "ERROR_SPEECH_TIMEOUT"
+            }/* ネットワーク接続をチェックする処理をここに入れる *//* ネットワーク接続をチェックをする処理をここに入れる */
+            Timber.d(reason)
+            restartListeningService()
+        }
+
+        override fun onResults(results: Bundle?) {
+            val candidates = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            val s: String? = candidates?.first()
+
+            // トーストで結果を表示
+            Timber.d(s)
+            restartListeningService()
         }
     }
 
