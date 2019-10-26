@@ -1,4 +1,4 @@
 from .auth import *
 from .register import *
-from .text import *
+from .user_text import *
 from .user import *

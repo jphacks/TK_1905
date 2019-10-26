@@ -13,7 +13,7 @@ schema_view = get_swagger_view()
 router = DefaultRouter()
 router.APIRootView = APIRootView
 router.register('users', views.UserViewSet, base_name='user')
-router.register('user/texts', views.TextViewSet, base_name='user_text')
+router.register('user/texts', views.UserTextViewSet, base_name='user_text')
 
 app_name = 'main'
 urlpatterns = [
