@@ -25,7 +25,6 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: MainViewModel by viewModels { viewModelFactory }
 
-    private lateinit var speechService: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +34,8 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @NeedsPermission(Manifest.permission.RECORD_AUDIO)
     fun startSpeechRecording() {
-        speechService = Intent(this, SpeechRecognizeService::class.java)
-        if (SpeechRecognizeService.isRunning.not()) {
-            ContextCompat.startForegroundService(this, speechService)
-        }
+        val speechService = Intent(this, SpeechRecognizeService::class.java)
+        ContextCompat.startForegroundService(this, speechService)
     }
 
     override fun onRequestPermissionsResult(
@@ -59,7 +56,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun stopSpeechRecording() {
         try {
-            stopService(speechService)
+            stopService(Intent(this, SpeechRecognizeService::class.java))
         } catch (e: Exception) {
             Timber.d(e)
         }

@@ -36,9 +36,9 @@ class RecordingFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.fab.setOnClickListener { mainViewModel.stopRecording() }
         binding.also {
             it.viewModel = viewModel
-            it.lifecycleOwner = viewLifecycleOwner
         }
     }
 
