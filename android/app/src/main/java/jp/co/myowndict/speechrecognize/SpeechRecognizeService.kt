@@ -16,12 +16,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import dagger.android.DaggerService
 import jp.co.myowndict.data.Repository
-import jp.co.myowndict.model.Result
 import jp.co.myowndict.model.SpeechEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
