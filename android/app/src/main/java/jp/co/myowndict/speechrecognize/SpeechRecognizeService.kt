@@ -83,14 +83,6 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
         isRunning = true
 
         startForeground(1, notification)
-
-        Thread(Runnable {
-            while (true) {
-                Thread.sleep(1_000)
-                Timber.d("test thread")
-            }
-        }).start()
-
         startListening()
 
         return START_STICKY
@@ -154,6 +146,9 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
         }
 
         override fun onPartialResults(partialResults: Bundle?) {
+            partialResults ?: return
+            val strings = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            Timber.d("$strings")
         }
 
         override fun onEvent(eventType: Int, params: Bundle?) {

@@ -2,6 +2,7 @@ package jp.co.myowndict.view.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,8 @@ class MainFragment : DaggerFragment() {
 
     private fun startSpeechRecording() {
         speechService = Intent(requireContext(), SpeechRecognizeService::class.java)
+        speechService.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+        speechService.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         if (SpeechRecognizeService.isRunning.not()) {
             startForegroundService(requireContext(), speechService)
         }
