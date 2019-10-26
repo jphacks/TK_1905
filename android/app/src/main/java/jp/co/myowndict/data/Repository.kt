@@ -45,6 +45,12 @@ class Repository @Inject constructor(
         return result
     }
 
+    suspend fun sendText(text: String): Result<Unit> {
+        return safeApiCall {
+            apiService.sendText(SpeechText(text))
+        }
+    }
+
     fun getUuid(): String? = sharedPreferences.getString(KEY_TOKEN, null)
 
     fun saveUuid(uuid: String) {

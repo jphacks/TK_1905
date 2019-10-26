@@ -1,6 +1,7 @@
 package jp.co.myowndict.data
 
 import jp.co.myowndict.di.RequireAuth
+import jp.co.myowndict.model.SpeechText
 import jp.co.myowndict.model.Token
 import jp.co.myowndict.model.Uuid
 import okhttp3.MultipartBody
@@ -23,4 +24,7 @@ interface ApiService {
 
     @POST("/api/auth/uuid/")
     suspend fun signIn(@Body uuid: Uuid): Response<Token>
+
+    @POST("/api/user/texts/")
+    suspend fun sendText(@Body text: SpeechText): Response<Unit>
 }
