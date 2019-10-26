@@ -58,6 +58,8 @@ class MainFragment : DaggerFragment() {
                 }
             }
         })
+
+        viewModel.getSentances()
     }
 
     @NeedsPermission(Manifest.permission.RECORD_AUDIO)

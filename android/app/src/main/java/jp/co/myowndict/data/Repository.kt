@@ -53,6 +53,12 @@ class Repository @Inject constructor(
         }
     }
 
+    suspend fun getSentences(): Result<SentenceContainer> {
+        return safeApiCall {
+            apiService.getSentences()
+        }
+    }
+
     fun getUuid(): String? = sharedPreferences.getString(KEY_TOKEN, null)
 
     fun saveUuid(uuid: String) {
