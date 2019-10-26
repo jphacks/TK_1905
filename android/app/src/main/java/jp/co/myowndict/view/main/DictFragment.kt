@@ -44,52 +44,53 @@ class DictFragment : DaggerFragment() {
                 top = insets.systemWindowInsetTop
             )
             insets
+        }
 
-            adapter = SentenceAdapter(viewLifecycleOwner,
-                onClick = {},
-                onLongClick = { sentence ->
-                    MaterialDialog(requireContext()).show {
-                        title(text = getString(R.string.delete_confirm_message, sentence.contentJp))
-                        positiveButton(text = "OK") { dictViewModel.deleteSentence(sentence) }
-                        negativeButton(text = "NG")
-                    }
+        adapter = SentenceAdapter(viewLifecycleOwner,
+            onClick = {},
+            onLongClick = { sentence ->
+                MaterialDialog(requireContext()).show {
+                    title(text = getString(R.string.delete_confirm_message, sentence.contentJp))
+                    positiveButton(text = "OK") { dictViewModel.deleteSentence(sentence) }
+                    negativeButton(text = "NG")
                 }
-            )
-            binding.recyclerView.adapter = adapter
-            binding.refreshLayout.setOnRefreshListener {
-                dictViewModel.getSentences()
             }
+        )
+        binding.recyclerView.adapter = adapter
+        binding.refreshLayout.setOnRefreshListener {
             dictViewModel.getSentences()
-
-            observe()
         }
+        dictViewModel.getSentences()
 
-        private fun observe() {
-            dictViewModel.sentences.observeNonNull(viewLifecycleOwner) {
-                adapter.submitList(it)
-                binding.refreshLayout.isRefreshing = false
-            }
-            dictViewModel.deleteEvent.observeNonNull(viewLifecycleOwner) {
-                // とりあえずToast
-                Toast.makeText(context, "削除しました", Toast.LENGTH_SHORT).show()
-            }
+        observe()
+    }
+
+    private fun observe() {
+        dictViewModel.sentences.observeNonNull(viewLifecycleOwner) {
+            adapter.submitList(it)
+            binding.refreshLayout.isRefreshing = false
         }
-
-        fun startTagAnimation() {
-            if (!isAdded) return
-            ObjectAnimator.ofFloat(
-                binding.slideBar,
-                "x",
-                binding.root.width.toFloat(),
-                binding.root.width.toFloat() - binding.slideBar.width
-            ).apply {
-                duration = 300
-                start()
-            }
-        }
-
-        fun hideTag() {
-            if (!isAdded) return
-            binding.slideBar.x = binding.root.width.toFloat()
+        dictViewModel.deleteEvent.observeNonNull(viewLifecycleOwner) {
+            // とりあえずToast
+            Toast.makeText(context, "削除しました", Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun startTagAnimation() {
+        if (!isAdded) return
+        ObjectAnimator.ofFloat(
+            binding.slideBar,
+            "x",
+            binding.root.width.toFloat(),
+            binding.root.width.toFloat() - binding.slideBar.width
+        ).apply {
+            duration = 300
+            start()
+        }
+    }
+
+    fun hideTag() {
+        if (!isAdded) return
+        binding.slideBar.x = binding.root.width.toFloat()
+    }
+}
