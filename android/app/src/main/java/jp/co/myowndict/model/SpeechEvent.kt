@@ -5,6 +5,10 @@ sealed class SpeechEvent {
         val text: String
     ) : SpeechEvent()
 
+    data class OnIgnored(
+        val text: String
+    ) : SpeechEvent()
+
     data class OnPartialResult(
         val partialText: String
     ) : SpeechEvent()
