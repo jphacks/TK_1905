@@ -191,5 +191,6 @@ class SpeechRecognizeService : Service() {
 
     companion object {
         var isRunning: Boolean = false
+            private set
     }
 }
