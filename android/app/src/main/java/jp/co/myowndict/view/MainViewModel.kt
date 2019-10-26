@@ -1,4 +1,4 @@
-package jp.co.myowndict.view.main
+package jp.co.myowndict.view
 
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject

@@ -28,7 +28,6 @@ import javax.inject.Inject
 class MainFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MainViewModel by viewModels { viewModelFactory }
     private lateinit var speechService: Intent
 
     private val binding by dataBinding<FragmentMainBinding>(R.layout.fragment_main)
