@@ -112,6 +112,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                     RecognizerIntent.EXTRA_LANGUAGE,
                     "ja_JP"
                 )
+                it.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
             }
 
             speechRecognizer!!.startListening(intent)
