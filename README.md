@@ -38,35 +38,35 @@
 
 <img src=https://user-images.githubusercontent.com/17210570/67637362-55c74000-f91d-11e9-8e01-61ca69ff15d2.gif width=30%>　<img src=https://user-images.githubusercontent.com/17210570/67637741-ece1c700-f920-11e9-825a-249fcb333b72.gif width=30%>　<img src=https://user-images.githubusercontent.com/17210570/67637740-ec493080-f920-11e9-9081-6440db2a41d6.gif width=30%>
 
-#### 1. 日々の日常会話を全て保存
+#### 日々の日常会話を全て保存
 
-<img src="https://github.com/jphacks/TK_1905/blob/master/images/recording2.png" width="320px">
+<img src="https://user-images.githubusercontent.com/17210570/67638044-ff113480-f923-11e9-80b6-7cacaff6a37b.png" width="320px">
 
-- タップで集音開始
+- 左スワイプで集音開始
 - アプリを閉じていても、バックグラウンドで集音
 - 認識精度の悪いセンテンスは、端末側で送らないようにする機能
 - 文章をサーバーに送信
 
-#### 2. 自分がよく使う日本語とそれに対応する英文を貯蓄
+#### 自分がよく使う日本語とそれに対応する英文を貯蓄
 
 - 自然言語処理や翻訳機能を利用
-- 翻訳結果のスコアを doc2vec などで計算し格納
+- 翻訳結果のスコアを doc2vec などで計算し格納（閾値以下のスコアを持つ例文は棄却する）
 
-#### 3. 自分専用の例文集を表示
+#### 自分専用の例文集を表示
 
-<img src="https://github.com/jphacks/TK_1905/blob/master/images/script.png" width="320px">
+<img src="https://user-images.githubusercontent.com/17210570/67637928-c0c74580-f922-11e9-98fe-cd9d354a9416.png" width="320px">
 
 - 発言頻度の高い文章順で表示
-- 明らかに翻訳がおかしいとされるものは非表示
+- 明らかに翻訳がおかしいとされるものは非表示に
 - ユーザーが自分で削除も可能
 - 文章をタップすることで、音声読み上げが可能
 
 #### 4. 自分専用の例文集を問題形式で表示
 
-<img src="https://github.com/jphacks/TK_1905/blob/master/images/practice1.png" width="320px">
+<img src="https://user-images.githubusercontent.com/17210570/67637987-72667680-f923-11e9-8388-a92d88e78e29.png" width="320px">
 
 - 英語を隠して表示
-- タップで日本語も出せる
+- 「表示」することで答えの英語を表示し，タップで発音を確認
 - スワイプで次の問題へ
 
 ### 解決出来ること
