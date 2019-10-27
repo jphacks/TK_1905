@@ -31,13 +31,6 @@ class RecordingViewModel @Inject constructor(
     val recognizedSentence: LiveData<Spanned> =
         partialResult.combineLatest(result) { partial, result -> concatSpannable(result, partial) }
 
-    private val colorSpan = ForegroundColorSpan(
-        ContextCompat.getColor(
-            application,
-            R.color.colorAccent
-        )
-    )
-
     fun sendSpeechText(text: String) {
         viewModelScope.launchWithProgress(inProgressLiveData) {
             when (val result = repository.sendText(text)) {
@@ -77,6 +70,9 @@ class RecordingViewModel @Inject constructor(
     private fun getSpannedString(spanned: Spanned, text: String) =
         SpannableStringBuilder(spanned).apply {
             val index = spanned.indexOf(text)
+            val colorSpan = ForegroundColorSpan(
+                ContextCompat.getColor(application, R.color.colorAccent)
+            )
             if (index != -1) {
                 setSpan(colorSpan, index, index + text.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
             }
