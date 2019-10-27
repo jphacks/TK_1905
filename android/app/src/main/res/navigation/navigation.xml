@@ -16,7 +16,11 @@
             android:id="@+id/action_splash_to_main"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/splashFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/stay_in"
+            app:exitAnim="@anim/stay_out"
+            app:popEnterAnim="@anim/stay_in"
+            app:popExitAnim="@anim/stay_out" />
     </fragment>
 
     <fragment
@@ -26,7 +30,11 @@
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_main_to_quiz"
-            app:destination="@id/quizFragment" />
+            app:destination="@id/quizFragment"
+            app:enterAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/stay_out"
+            app:popEnterAnim="@anim/stay_in"
+            app:popExitAnim="@anim/slide_to_bottom" />
     </fragment>
 
     <fragment
