@@ -2,6 +2,8 @@
 
 [![RecMe](https://github.com/jphacks/TK_1905/blob/feature/yusk-develop/android/app/src/main/res/drawable/logo_horizontal.png)](https://youtu.be/7AiTSl1K27c)
 
+↑動画はロゴをクリック
+
 ## 製品概要
 
 ### Education x  Tech
