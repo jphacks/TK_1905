@@ -2,7 +2,6 @@ from threading import Lock
 
 
 class Singleton:
-
     _unique_instance = None
     _lock = Lock()
 

@@ -30,6 +30,8 @@ django-celery-results = "*"
 redis = "*"
 django-redis = "*"
 django-celery-beat = "*"
+mecab-python3 = "*"
+gensim = "*"
 
 [dev-packages]
 httpie = "*"
