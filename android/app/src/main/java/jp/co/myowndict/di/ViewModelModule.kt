@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import jp.co.myowndict.view.main.DictViewModel
 import jp.co.myowndict.view.main.RecordingViewModel
+import jp.co.myowndict.view.quiz.QuizViewModel
 
 /**
  * ViewModelModule
@@ -26,4 +27,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RecordingViewModel::class)
     abstract fun bindRecordingViewModel(viewModel: RecordingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(QuizViewModel::class)
+    abstract fun bindQuizViewModel(viewModel: QuizViewModel): ViewModel
 }

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +42,14 @@ class RecordingFragment : DaggerFragment() {
         binding.also {
             it.viewModel = viewModel
         }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.rootView) { v, insets ->
+            v.updatePadding(
+                bottom = insets.systemWindowInsetBottom,
+                top = insets.systemWindowInsetTop
+            )
+            insets
+        }
     }
 
     override fun onResume() {
@@ -71,7 +81,7 @@ class RecordingFragment : DaggerFragment() {
         EventBus.getDefault().unregister(this)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     @Suppress("unused")
     fun onMessageReceiveEvent(event: SpeechEvent) {
         when (event) {
