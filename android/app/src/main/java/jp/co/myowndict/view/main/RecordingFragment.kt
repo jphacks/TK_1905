@@ -76,6 +76,9 @@ class RecordingFragment : DaggerFragment() {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     @Suppress("unused")
     fun onMessageReceiveEvent(event: SpeechEvent) {
+        binding.textScrollView.post {
+            binding.textScrollView.fullScroll(View.FOCUS_DOWN)
+        }
         when (event) {
             is SpeechEvent.OnPartialResult -> viewModel.updatePartialResult(event.partialText)
             is SpeechEvent.OnResult -> {
