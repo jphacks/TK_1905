@@ -42,14 +42,6 @@ class RecordingFragment : DaggerFragment() {
         binding.also {
             it.viewModel = viewModel
         }
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.rootView) { v, insets ->
-            v.updatePadding(
-                bottom = insets.systemWindowInsetBottom,
-                top = insets.systemWindowInsetTop
-            )
-            insets
-        }
     }
 
     override fun onResume() {
