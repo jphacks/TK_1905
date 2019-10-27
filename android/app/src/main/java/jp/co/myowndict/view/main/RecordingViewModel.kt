@@ -60,18 +60,25 @@ class RecordingViewModel @Inject constructor(
         )
     }
 
-    private fun concatSpannable(s1: Spanned, s2: Spanned): Spanned =
-        when {
-            TextUtils.isEmpty(s2) -> s1
-            TextUtils.isEmpty(s1) -> s2
-            else -> TextUtils.concat(s1, "\n", s2) as Spanned
+    private fun concatSpannable(s1: Spanned, s2: Spanned): Spanned {
+        val colorSpan = ForegroundColorSpan(
+            ContextCompat.getColor(application, R.color.not_send_color)
+        )
+        val builder = SpannableStringBuilder(s2).apply {
+            setSpan(colorSpan, 0, s2.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
         }
+        return when {
+            TextUtils.isEmpty(s2) -> s1
+            TextUtils.isEmpty(s1) -> builder
+            else -> TextUtils.concat(s1, "\n", builder) as Spanned
+        }
+    }
 
     private fun getSpannedString(spanned: Spanned, text: String) =
         SpannableStringBuilder(spanned).apply {
             val index = spanned.indexOf(text)
             val colorSpan = ForegroundColorSpan(
-                ContextCompat.getColor(application, R.color.colorAccent)
+                ContextCompat.getColor(application, R.color.white)
             )
             if (index != -1) {
                 setSpan(colorSpan, index, index + text.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
