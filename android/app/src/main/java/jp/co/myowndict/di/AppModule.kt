@@ -11,11 +11,11 @@ import dagger.Provides
 import jp.co.myowndict.BuildConfig
 import jp.co.myowndict.MyApplication
 import jp.co.myowndict.data.ApiService
-import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
 /**
  * AppModule
@@ -25,7 +25,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 abstract class AppModule {
     @Module
     companion object {
-        private const val apiUrl = ""
+        private const val apiUrl = "https://api.myowndict.volare.site"
 
         @Provides
         @Singleton
@@ -74,8 +74,6 @@ abstract class AppModule {
                 .addInterceptor { chain ->
                     val original = chain.request()
                     val request = with(original.newBuilder()) {
-                        header("X-Device-Type", "android")
-                        header("X-App-Version", BuildConfig.VERSION_NAME)
                         method(original.method(), original.body())
                     }.build()
                     chain.proceed(request)
