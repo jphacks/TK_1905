@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 
 from rest_framework.mixins import (RetrieveModelMixin, ListModelMixin,
                                    DestroyModelMixin)
@@ -10,8 +10,11 @@ from main.serializers import SentenceSerializer
 
 
 class UserSentenceFilter(filters.FilterSet):
-    score__gt = filters.CharFilter(field_name='score', lookup_expr='gt')
-    score__lt = filters.CharFilter(field_name='score', lookup_expr='lt')
+    def get_by_score__gt(self, queryset, name, value):
+        return queryset.filter(Q(score__gt=value) | Q(score=.0)).distinct()
+
+    score__gt = filters.NumberFilter(method='get_by_score__gt')
+    score__lt = filters.NumberFilter(field_name='score', lookup_expr='lt')
 
 
 class UserSentenceViewSet(ListModelMixin, RetrieveModelMixin,
