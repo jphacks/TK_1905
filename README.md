@@ -62,30 +62,15 @@
 
 #### フレームワーク・ライブラリ・モジュール
 
-* インフラ
-  * nginx
-  * uwsgi
-  * sakura vps
-* サーバーサイド
-  * python
-  * django
-* データベース
-  * sqlite3
-  * redis
-* ジョブキュー
-  * celery
+* バックエンド
+  * インフラ: nginx, uwsgi, sakura vps
+  * サーバーサイド: python, django
+  * データベース: sqlite3, redis
+  * ジョブキュー: celery
 * アプリケーション
-  * android
-    * kotlin
-    * kotlin coroutine
-    * dagger
-    * mvvm
-    * android speech recognizer
+  * android: kotlin, kotlin coroutine, dagger, mvvm, android speech recognizer
 * デザイン
-  * adobe illustrator
-  * adobe photoshop
-  * adobe XD
-  * adobe affter effects 
+  * adobe illustrator, adobe photoshop, adobe XD, adobe affter effects 
 
 #### デバイス
 
@@ -105,13 +90,13 @@
 ##### Server
 
 - ジョブキューフレームワークを用いて、Google Croud などでの演算は非同期で
-  - https://github.com/jphacks/TK_1905/blob/master/server/main/views/api/user_text.py#L26
-  - https://github.com/jphacks/TK_1905/blob/master/server/main/tasks.py#L8
+  - [user_text.py](https://github.com/jphacks/TK_1905/blob/master/server/main/views/api/user_text.py#L26)
+  - [tasks.py](https://github.com/jphacks/TK_1905/blob/master/server/main/tasks.py#L8)
 - Google Croud Natural Language API で分けきれない酷い日本語文章を、ヒューリスティックな手法で分解
-  - https://github.com/jphacks/TK_1905/blob/master/server/main/utils/googleutils/language.py
-  - https://github.com/jphacks/TK_1905/blob/master/server/main/tests.py
+  - [language.py](https://github.com/jphacks/TK_1905/blob/master/server/main/utils/googleutils/language.py)
+  - [tests.py](https://github.com/jphacks/TK_1905/blob/master/server/main/tests.py)
 - Google Croud Translation API と Wikipedia のデータで学習した doc2vec を用い、翻訳結果をスコアリング
-  - https://github.com/jphacks/TK_1905/blob/master/server/main/management/commands/calc_all_sentence_score.py
+  - [calc_all_sentence_score.py](https://github.com/jphacks/TK_1905/blob/master/server/main/management/commands/calc_all_sentence_score.py)
 
 ##### Android
 
