@@ -11,4 +11,5 @@
     <color name="gray">#505151</color>
     <color name="background">#FAFAFA</color>
     <color name="mainTextColor">#555555</color>
+    <color name="not_send_color">#88ffffff</color>
 </resources>
