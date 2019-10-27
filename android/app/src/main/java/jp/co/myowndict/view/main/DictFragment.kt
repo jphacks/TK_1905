@@ -53,14 +53,6 @@ class DictFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.rootView) { v, insets ->
-            v.updatePadding(
-                bottom = insets.systemWindowInsetBottom,
-                top = insets.systemWindowInsetTop
-            )
-            insets
-        }
-
         adapter = SentenceAdapter(viewLifecycleOwner,
             onClick = { sentence -> speakSentence(sentence) },
             onLongClick = { sentence -> deleteSentence(sentence) }

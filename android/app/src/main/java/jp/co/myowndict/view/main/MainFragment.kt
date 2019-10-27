@@ -53,7 +53,6 @@ class MainFragment : DaggerFragment() {
             }
         })
 
-
         observe()
     }
 
@@ -87,12 +86,12 @@ class MainFragment : DaggerFragment() {
                 window.navigationBarColor =
                     parentFragment.requireActivity().getColor(android.R.color.transparent)
                 window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             } else {
                 window.navigationBarColor =
                     parentFragment.requireActivity().getColor(R.color.colorPrimary)
                 window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             }
             fragments.forEach { frag ->
                 when (frag) {
@@ -106,15 +105,9 @@ class MainFragment : DaggerFragment() {
             val window = parentFragment.requireActivity().window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = parseColor("#dd505151")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.navigationBarColor =
-                    parentFragment.requireActivity().getColor(android.R.color.transparent)
-            } else {
-                window.navigationBarColor =
-                    parentFragment.requireActivity().getColor(R.color.colorPrimary)
-            }
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            window.navigationBarColor =
+                parentFragment.requireActivity().getColor(R.color.colorPrimary)
+            window.decorView.systemUiVisibility = 0
             fragments.forEach { frag ->
                 when (frag) {
                     is DictFragment -> frag.hideTag()
