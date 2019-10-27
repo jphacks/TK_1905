@@ -32,11 +32,12 @@ def _split_text_with_rules(tokens,
             if eof_role in content:
                 print("************point1************")
                 end_flag = True
-        for eof_word in eof_words:
-            if eof_word == content:
-                print("point2")
-                end_flag = True
         kaketasaki_token = tokens[token.dependency_edge.head_token_index]
+        if enums.PartOfSpeech.Tag(kaketasaki_token.part_of_speech.tag).name != "NOUN":
+            for eof_word in eof_words:
+                if eof_word == content:
+                    print("point2")
+                    end_flag = True
         if kaketasaki_token == kaketasaki_token.dependency_edge.head_token_index:
             text.append(sentence)
             sentence = ""
