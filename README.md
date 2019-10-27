@@ -118,6 +118,6 @@
     - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt)
 - 独自のスライドアニメーション
     - [MainFragment.kt](https://github.com/jphacks/TK_1905/blob/8a8d3951c83d789ce4e61f0712502312994706b3/android/app/src/main/java/jp/co/myowndict/view/main/MainFragment.kt) の46〜54行目
-    - DictFragmentとResultFragmentのstartTagAnimation()関数
+    - [DictFragment](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/view/main/DictFragment.kt) と[RecordingFragment](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/view/main/RecordingFragment.kt)のstartTagAnimation()関数
 - サーバに送る文字列が日本語として正常になるように制度の悪いセンテンスは送らないようにする機能
     - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt#L215) の215行目
