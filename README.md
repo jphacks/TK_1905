@@ -110,6 +110,16 @@
 
 #### 2日間に開発した独自の機能・技術
 
+##### Android
+
+- バックグランドでアプリが起動していて，音声認識して文字起こしする技術
+    - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt)
+- 独自のスライドアニメーション
+    - [MainFragment.kt](https://github.com/jphacks/TK_1905/blob/8a8d3951c83d789ce4e61f0712502312994706b3/android/app/src/main/java/jp/co/myowndict/view/main/MainFragment.kt) の46〜54行目
+    - [DictFragment](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/view/main/DictFragment.kt) と[RecordingFragment](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/view/main/RecordingFragment.kt)のstartTagAnimation()関数
+- サーバに送る文字列が日本語として正常になるように精度の悪いセンテンスは送らないようにする機能
+    - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt#L215) の215行目
+
 ##### Server
 
 - ジョブキューフレームワークを用いて、Google Croud などでの演算は非同期で
@@ -120,13 +130,3 @@
   - [tests.py](https://github.com/jphacks/TK_1905/blob/master/server/main/tests.py)
 - Google Croud Translation API と Wikipedia のデータで学習した doc2vec を用い、翻訳結果をスコアリング
   - [calc_all_sentence_score.py](https://github.com/jphacks/TK_1905/blob/master/server/main/management/commands/calc_all_sentence_score.py)
-
-##### Android
-
-- バックグランドでアプリが起動していて，音声認識して文字起こしする技術
-    - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt)
-- 独自のスライドアニメーション
-    - [MainFragment.kt](https://github.com/jphacks/TK_1905/blob/8a8d3951c83d789ce4e61f0712502312994706b3/android/app/src/main/java/jp/co/myowndict/view/main/MainFragment.kt) の46〜54行目
-    - [DictFragment](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/view/main/DictFragment.kt) と[RecordingFragment](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/view/main/RecordingFragment.kt)のstartTagAnimation()関数
-- サーバに送る文字列が日本語として正常になるように精度の悪いセンテンスは送らないようにする機能
-    - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt#L215) の215行目
