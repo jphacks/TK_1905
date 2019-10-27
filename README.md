@@ -71,7 +71,7 @@
 
 ### 解決出来ること
 
-**英会話の学習にそこまで時間かけれない人** でも、 **自分が確実に使う英会話を優先する** ことにより、 **効率的に英会話の勉強** ができる
+このアプリを使うことで，**「普段自分が話す表現を，ただ英語で話したいだけ」**のユーザが，**「必要最低限の学習で，自分だけの表現を英語にすること」**ために取り組むことができるようになります．
 
 ### 今後の展望
 
@@ -122,7 +122,11 @@
 #### 2日間に開発した独自の機能・技術
 
 ##### Android
-
+- アーキテクチャ
+  - MVVM + Repositoryパターン + DI(dagger)
+  - 選定理由
+    今回はAndroidエンジニアが3人と多めであり，同時開発においてブランチ同士が容易にコンフリクトすることが考えられた．故に，疎結合な設計が求められる．
+    当初はCleanArchitextureを導入することを考えたが，2日間という限られた時間内で開発するスピード感も求められるため，Domain層を排除した2-layerd-architectureを選定した．一方でDpendencyInjectionを活用することで，疎結合を保っている．
 - バックグランドでアプリが起動していて，音声認識して文字起こしする技術
     - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt)
 - 独自のスライドアニメーション
