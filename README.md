@@ -27,10 +27,10 @@
 
 #### 1. 日々の日常会話を全て保存
 
+<img src="https://github.com/jphacks/TK_1905/blob/master/images/recording2.png" width="320px">
+
 - タップで集音開始
 - アプリを閉じていても、バックグラウンドで集音
-
-<img src="https://github.com/jphacks/TK_1905/blob/master/images/recording2.png" width="320px">
 
 #### 2. 自分がよく使う日本語とそれに対応する英文を貯蓄
 
@@ -39,11 +39,19 @@
 
 #### 3. 自分専用の例文集を表示
 
+<img src="https://github.com/jphacks/TK_1905/blob/master/images/script.png" width="320px">
+
 - 発言頻度の高い文章順で表示
 - 明らかに翻訳がおかしいとされるものは非表示
 - ユーザーが自分で削除も可能
 
-<img src="https://github.com/jphacks/TK_1905/blob/master/images/script.png" width="320px">
+#### 4. 自分専用の例文集を問題形式で表示
+
+<img src="https://github.com/jphacks/TK_1905/blob/master/images/practice1.png" width="320px">
+
+- 英語を隠して表示
+- タップで日本語も出せる
+- スワイプで次の問題へ
 
 ### 解決出来ること
 
