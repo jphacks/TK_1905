@@ -6,8 +6,7 @@ import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.updatePadding
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -57,7 +56,15 @@ class DictFragment : DaggerFragment() {
             onClick = { sentence -> speakSentence(sentence) },
             onLongClick = { sentence -> deleteSentence(sentence) }
         )
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.let { rv ->
+            rv.adapter = adapter
+
+            val controller = AnimationUtils.loadLayoutAnimation(
+                context,
+                R.anim.layout_animation_slide_from_left
+            )
+            rv.layoutAnimation = controller
+        }
         binding.refreshLayout.setOnRefreshListener {
             dictViewModel.getSentences()
         }
@@ -94,6 +101,8 @@ class DictFragment : DaggerFragment() {
             duration = 300
             start()
         }
+
+        binding.recyclerView.startLayoutAnimation()
     }
 
     fun hideTag() {
