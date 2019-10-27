@@ -45,6 +45,14 @@
 
 <img src="https://github.com/jphacks/TK_1905/blob/master/images/script.png" width="320px">
 
+#### 4. 自分専用の例文集を問題形式で表示
+
+- 英語を隠して表示
+- タップで日本語も出せる
+- スワイプで次の問題へ
+
+<img src="https://github.com/jphacks/TK_1905/blob/master/images/practice1.png" width="320px">
+
 ### 解決出来ること
 
 **英会話の学習にそこまで時間かけれない人** でも、 **自分が確実に使う英会話を優先する** ことにより、 **効率的に英会話の勉強** ができる
