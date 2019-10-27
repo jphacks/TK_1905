@@ -31,15 +31,22 @@ class RecordingViewModel @Inject constructor(
     val recognizedSentence: LiveData<Spanned> =
         partialResult.combineLatest(result) { partial, result -> concatSpannable(result, partial) }
 
+    private val colorSpan = ForegroundColorSpan(
+        ContextCompat.getColor(
+            application,
+            R.color.colorAccent
+        )
+    )
+
     fun sendSpeechText(text: String) {
         viewModelScope.launchWithProgress(inProgressLiveData) {
             when (val result = repository.sendText(text)) {
                 is Result.Success -> {
                     Timber.d("Sent content -> $text")
                     // 非同期処理の扱いはとりあえず考えない
-//                    partialResult.value = partialResult.value.run {
-//                        replace()
-//                    }
+                    val currentSentence = recognizedSentence.value ?: return@launchWithProgress
+                    partialResultLiveData.value = SpannedString("")
+                    resultLiveData.value = getSpannedString(currentSentence, text)
                 }
                 is Result.Error -> Timber.e("Failed to send content -> $text")
             }
@@ -61,16 +68,18 @@ class RecordingViewModel @Inject constructor(
         )
     }
 
-    private fun concatSpannable(s1: Spanned, s2: Spanned): Spanned {
-        val colorSpan = ForegroundColorSpan(
-            ContextCompat.getColor(
-                application,
-                R.color.colorAccent
-            )
-        )
-        val builder = SpannableStringBuilder(s1).apply {
-            setSpan(colorSpan, 0, s1.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+    private fun concatSpannable(s1: Spanned, s2: Spanned): Spanned =
+        when {
+            TextUtils.isEmpty(s2) -> s1
+            TextUtils.isEmpty(s1) -> s2
+            else -> TextUtils.concat(s1, "\n", s2) as Spanned
         }
-        return TextUtils.concat(builder, "\n", s2) as Spanned
-    }
+
+    private fun getSpannedString(spanned: Spanned, text: String) =
+        SpannableStringBuilder(spanned).apply {
+            val index = spanned.indexOf(text)
+            if (index != -1) {
+                setSpan(colorSpan, index, index + text.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+            }
+        }
 }
