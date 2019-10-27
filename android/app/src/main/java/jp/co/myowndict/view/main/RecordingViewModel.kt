@@ -44,8 +44,7 @@ class RecordingViewModel @Inject constructor(
                 is Result.Success -> {
                     Timber.d("Sent content -> $text")
                     // 非同期処理の扱いはとりあえず考えない
-                    val currentSentence = recognizedSentence.value ?: return@launchWithProgress
-                    partialResultLiveData.value = SpannedString("")
+                    val currentSentence = resultLiveData.value ?: return@launchWithProgress
                     resultLiveData.value = getSpannedString(currentSentence, text)
                 }
                 is Result.Error -> Timber.e("Failed to send content -> $text")
@@ -54,7 +53,7 @@ class RecordingViewModel @Inject constructor(
     }
 
     fun updatePartialResult(text: String) {
-        if (text.isNotEmpty()) partialResultLiveData.value = SpannedString("")
+        if (text.isNotEmpty()) partialResultLiveData.value = SpannedString(text)
     }
 
     fun clearPartialResult() {
