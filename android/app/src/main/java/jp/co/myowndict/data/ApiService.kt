@@ -21,7 +21,7 @@ interface ApiService {
     suspend fun sendText(@Body text: SpeechText): Response<Unit>
 
     @RequireAuth
-    @GET("/api/user/sentences/?score__gt=0.8")
+    @GET("/api/user/sentences/?score__gt=0.6")
     suspend fun getSentences(): Response<SentenceContainer>
 
     @RequireAuth
