@@ -8,10 +8,11 @@ class SentenceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sentence
-        fields = ('content_jp', 'content_en', 'spoken_count', )
+        fields = ('content_jp', 'content_en', 'score', 'spoken_count', )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['score'].read_only = True
 
     def get_spoken_count(self, obj):
         return obj.usersentence_set.all().count()
