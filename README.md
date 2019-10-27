@@ -126,7 +126,7 @@
   - MVVM + Repositoryパターン + DI(dagger)
   - 選定理由
     今回はAndroidエンジニアが3人と多めであり，同時開発においてブランチ同士が容易にコンフリクトすることが考えられた．故に，疎結合な設計が求められる．
-    当初はCleanArchitextureを導入することを考えたが，2日間という限られた時間内で開発するスピード感も求められるため，Domain層を排除した2-layerd-architectureを選定した．一方でDpendencyInjectionを活用することで，疎結合を保っている．
+    当初はCleanArchitectureを導入することを考えたが，2日間という限られた時間内で開発するスピード感も求められるため，Domain層を排除した2-layerd-architectureを選定した．一方でDpendencyInjectionを活用することで，疎結合を保っている．
 - バックグランドでアプリが起動していて，音声認識して文字起こしする技術
     - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt)
 - 独自のスライドアニメーション
