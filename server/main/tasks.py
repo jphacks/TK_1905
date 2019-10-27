@@ -12,11 +12,7 @@ def split_and_register_sentences(text_id):
         sentence = Sentence.objects.filter(content_jp=sentence_str).first()
         if sentence is None:
             sentence_en = translate(sentence_str)
-            sentence_jp = translate(sentence_en, target='ja')
-            score = doc2vec(sentence_str, sentence_jp)
             sentence = Sentence.objects.create(content_jp=sentence_str,
-                                               content_en=sentence_en,
-                                               score=score,
-                                               memo=sentence_jp)
+                                               content_en=sentence_en)
         UserSentence.objects.create(text=user_text, sentence=sentence)
     return True
