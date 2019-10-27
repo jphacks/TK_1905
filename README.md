@@ -8,8 +8,6 @@
 
 ### Education x  Tech
 
-### コンセプト
-
 > **自分で作る 自分のための 英語学習アプリ**
 
 ### 背景と課題
@@ -32,6 +30,13 @@
 **自分がよく使っている文章順で** その文と英訳を表示し英会話の勉強に役立てるアプリ
 
 ### 特長
+
+#### 使い方
+1. アプリを起動して録音を開始
+2. 発言を録音する（バックグラウンド動作可）
+3. 認識結果から英文と和文のペアを確認、クイズ形式の練習も可能
+
+<img src=https://user-images.githubusercontent.com/17210570/67637362-55c74000-f91d-11e9-8e01-61ca69ff15d2.gif width=30%>　<img src=https://user-images.githubusercontent.com/17210570/67637741-ece1c700-f920-11e9-825a-249fcb333b72.gif width=30%>　<img src=https://user-images.githubusercontent.com/17210570/67637740-ec493080-f920-11e9-9081-6440db2a41d6.gif width=30%>
 
 #### 1. 日々の日常会話を全て保存
 
