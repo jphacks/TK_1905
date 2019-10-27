@@ -11,26 +11,43 @@ def _split_text_with_rules(tokens,
 
     sentence = ""
     end_flag = False
-    for token in tokens:
+    prev_token = None
+    for i, token in enumerate(tokens):
         content = token.text.content
         part_of_speech_tag = enums.PartOfSpeech.Tag(token.part_of_speech.tag)
 
-        if end_flag and part_of_speech_tag.name == "VERB":
+        if end_flag and part_of_speech_tag.name == "VERB": #動詞
             end_flag = True
-        elif end_flag and part_of_speech_tag.name != "PRT":
+        elif end_flag and part_of_speech_tag.name != "PRT": #修飾詞
             texts.append(sentence)
             sentence = ""
             end_flag = False
 
-        # print(part_of_speech_tag.name, content,
-        #       token.dependency_edge.head_token_index)
+        print(i, part_of_speech_tag.name, content,
+              token.dependency_edge.head_token_index)
         sentence += content
-        for eof_role in eof_roles:
-            if eof_role in content:
-                end_flag = True
+        if content == "た" and prev_token == "まし":
+            end_flag = True
         for eof_word in eof_words:
             if eof_word == content:
+                print("point2")
                 end_flag = True
+        for eof_role in eof_roles:
+            if eof_role in content:
+                print("************point1************")
+                end_flag = True
+        kaketasaki_token = tokens[token.dependency_edge.head_token_index]
+        # if enums.PartOfSpeech.Tag(kaketasaki_token.part_of_speech.tag).name != "NOUN":
+        #     for eof_word in eof_words:
+        #         if eof_word == content:
+        #             print("point2")
+        #             end_flag = True
+        if kaketasaki_token == kaketasaki_token.dependency_edge.head_token_index:
+            text.append(sentence)
+            sentence = ""
+            end_flag = False
+        
+        prev_token = content
 
     texts.append(sentence)
 

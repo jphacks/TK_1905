@@ -28,10 +28,29 @@ class GoogleUtilsTests(TestCase):
              [
                  '誰がその中の問題も悪化したら', '問題モードに移行して', '日本語出てきて',
                  '英語単語帳みたいな感じでセンスみたいな感じで帰って', 'ペラペラペラオみたいな感じで'
-             ])
+             ]),
+             ("ファブをこいつの真ん中に LINE してるってのやりました漫画になってるよね待って待って　さっき家に帰りました",
+             [
+                 'ファブをこいつの真ん中にLINEしてるってのやりました',
+                 '漫画になってるよね待って待って',
+                 'さっき家に帰りました'
+             ]),
+            #  ("英語の学習アプリですねただの英語の学習アプリじゃなくて自分の普段の会話から勝手にできる英語学習アプリです",
+            # [
+            #     '英語の学習アプリですね','ただの英語の学習アプリじゃなくて自分の普段の会話から勝手にできる英語学習アプリです'
+            # ])
         ]
         for test_case in test_cases:
             texts = split_text(test_case[0])
             print(texts)
-            self.assertTrue(test_case[1] == texts)
+            try:
+                self.assertTrue(test_case[1] == texts)
+            except AssertionError as e:
+                try:
+                    for i in range(len(texts)):
+                        print(f"実際: {texts[i]}\n正解: {test_case[1][i]}")
+                        print("-" * 24)
+                except Exception:
+                    pass
+                raise e
             print("OK")
