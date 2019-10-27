@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -28,6 +29,8 @@ import kotlin.coroutines.CoroutineContext
 class SpeechRecognizeService : DaggerService(), CoroutineScope {
     private var speechRecognizer: SpeechRecognizer? = null
     private lateinit var notification: Notification
+    private var streamVolume: Int = 0
+    private lateinit var audioManager: AudioManager
 
     @Inject
     lateinit var repository: Repository
@@ -83,6 +86,8 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
         startForeground(1, notification)
         startListening()
 
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         return START_STICKY
     }
 
@@ -125,6 +130,12 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume, 0)
+    }
+
     private fun stopListening() {
         if (speechRecognizer != null) speechRecognizer?.destroy()
         speechRecognizer = null
@@ -158,6 +169,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
         }
 
         override fun onBeginningOfSpeech() {
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0)
         }
 
         override fun onEndOfSpeech() {
