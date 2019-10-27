@@ -1,6 +1,6 @@
 # RecMe
 
-[![RecMe](https://github.com/jphacks/TK_1905/blob/master/images/logo_with_subtitle.png)](https://youtu.be/7AiTSl1K27c)
+[![RecMe](https://github.com/jphacks/TK_1905/blob/master/images/logo_with_subtitle.png)](https://www.youtube.com/watch?v=52iedkpzf6o)
 
 ↑動画はロゴをクリック
 
