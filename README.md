@@ -1,6 +1,6 @@
 # RecMe
 
-[![RecMe](https://github.com/jphacks/TK_1905/blob/feature/yusk-develop/android/app/src/main/res/drawable/logo_horizontal.png)](https://www.youtube.com/watch?v=G5rULR53uMk)
+[![RecMe](https://github.com/jphacks/TK_1905/blob/feature/yusk-develop/android/app/src/main/res/drawable/logo_horizontal.png)](https://youtu.be/7AiTSl1K27c)
 
 ## 製品概要
 
