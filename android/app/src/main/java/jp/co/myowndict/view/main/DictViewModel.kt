@@ -1,5 +1,6 @@
 package jp.co.myowndict.view.main
 
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -26,7 +27,11 @@ class DictViewModel @Inject constructor(
     fun getSentences() {
         viewModelScope.launchWithProgress(inProgressLiveData) {
             when (val result = repository.getSentences()) {
-                is Result.Success -> sentencesLiveData.value = result.data.sentences
+                is Result.Success -> sentencesLiveData.value =
+                    result.data.sentences.map {
+                        it.copy(contentEn = HtmlCompat.fromHtml(it.contentEn,
+                            HtmlCompat.FROM_HTML_MODE_COMPACT).toString())
+                    }
                 is Result.Error -> Timber.e("Failed to fetch sentences")
             }
         }
