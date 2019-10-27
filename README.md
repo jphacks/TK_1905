@@ -1,9 +1,10 @@
-# サンプル（プロダクト名）
+# RecMe
 
-[![Product Name](image.png)](https://www.youtube.com/watch?v=G5rULR53uMk)
+[![RecMe](https://github.com/jphacks/TK_1905/blob/feature/yusk-develop/android/app/src/main/res/drawable/logo_horizontal.png)](https://www.youtube.com/watch?v=G5rULR53uMk)
 
 ## 製品概要
-### Edu Tech（X → 今回皆さんが選定した好きな言葉に書き換えてください）
+
+### Edu Tech
 
 ### 背景（製品開発のきっかけ、課題等）
 
