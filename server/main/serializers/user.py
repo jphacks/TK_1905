@@ -14,7 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['id'].read_only = True
-        self.fields['id'].read_only = True
 
     def update(self, instance, validated_data):
         if 'icon_base64' in validated_data:

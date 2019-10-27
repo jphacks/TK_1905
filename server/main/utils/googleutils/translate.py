@@ -5,6 +5,6 @@ def translate(text, target='en'):
     translate_client = google_translate.Client()
 
     translation = translate_client.translate(text, target_language=target)
-    print(translation)
+    # print(translation)
 
     return translation['translatedText']

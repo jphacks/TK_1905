@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from main.utils import translate
+from main.utils import translate, doc2vec
 
 
 class Command(BaseCommand):
@@ -13,4 +13,10 @@ class Command(BaseCommand):
         print('translate')
         text = options['text']
 
-        print(translate(text))
+        text_en = translate(text)
+        text_ja = translate(text_en, target="ja")
+        print(text)
+        print(text_en)
+        print(text_ja)
+
+        print(doc2vec(text, text_ja))
