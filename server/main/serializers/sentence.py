@@ -15,4 +15,4 @@ class SentenceSerializer(serializers.ModelSerializer):
         self.fields['score'].read_only = True
 
     def get_spoken_count(self, obj):
-        return obj.usersentence_set.all().count()
+        return obj.usersentence_set.filter(text__user=self.user).count()
