@@ -33,11 +33,13 @@
 
 - タップで集音開始
 - アプリを閉じていても、バックグラウンドで集音
+- 認識精度の悪いセンテンスは、端末側で送らないようにする機能
+- 文章をサーバーに送信
 
 #### 2. 自分がよく使う日本語とそれに対応する英文を貯蓄
 
 - 自然言語処理や翻訳機能を利用
-- 翻訳結果のスコアも格納
+- 翻訳結果のスコアを doc2vec などで計算し格納
 
 #### 3. 自分専用の例文集を表示
 
@@ -46,6 +48,7 @@
 - 発言頻度の高い文章順で表示
 - 明らかに翻訳がおかしいとされるものは非表示
 - ユーザーが自分で削除も可能
+- 文章をタップすることで、音声読み上げが可能
 
 #### 4. 自分専用の例文集を問題形式で表示
 
@@ -121,5 +124,5 @@
 - 独自のスライドアニメーション
     - [MainFragment.kt](https://github.com/jphacks/TK_1905/blob/8a8d3951c83d789ce4e61f0712502312994706b3/android/app/src/main/java/jp/co/myowndict/view/main/MainFragment.kt) の46〜54行目
     - [DictFragment](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/view/main/DictFragment.kt) と[RecordingFragment](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/view/main/RecordingFragment.kt)のstartTagAnimation()関数
-- サーバに送る文字列が日本語として正常になるように制度の悪いセンテンスは送らないようにする機能
+- サーバに送る文字列が日本語として正常になるように精度の悪いセンテンスは送らないようにする機能
     - [SpeechRecognizeService.kt](https://github.com/jphacks/TK_1905/blob/master/android/app/src/main/java/jp/co/myowndict/speechrecognize/SpeechRecognizeService.kt#L215) の215行目
