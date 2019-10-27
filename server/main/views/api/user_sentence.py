@@ -22,10 +22,9 @@ class UserSentenceViewSet(ListModelMixin, RetrieveModelMixin,
     serializer_class = SentenceSerializer
     filter_class = UserSentenceFilter
 
-    # def get_serializer(self, *args, **kwargs):
-        # serializer = super().get_serializer(self, *args, **kwargs)
-        # serializer.user = self.request.user
-        # return serializer
+    def get_serializer(self, *args, **kwargs):
+        kwargs["user"] = self.request.user
+        return super().get_serializer(*args, **kwargs)
 
     def perform_destroy(self, instance):
         instance.usersentence_set.filter(text__user=self.request.user).delete()
