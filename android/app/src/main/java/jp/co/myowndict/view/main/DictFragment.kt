@@ -102,7 +102,7 @@ class DictFragment : DaggerFragment() {
             start()
         }
 
-        binding.recyclerView.scheduleLayoutAnimation()
+        binding.recyclerView.startLayoutAnimation()
     }
 
     fun hideTag() {
