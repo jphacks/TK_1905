@@ -30,6 +30,8 @@
 - タップで集音開始
 - アプリを閉じていても、バックグラウンドで集音
 
+<img src="https://github.com/jphacks/TK_1905/blob/master/images/recording2.png" width="320px">
+
 #### 2. 自分がよく使う日本語とそれに対応する英文を貯蓄
 
 - 自然言語処理や翻訳機能を利用
@@ -40,6 +42,8 @@
 - 発言頻度の高い文章順で表示
 - 明らかに翻訳がおかしいとされるものは非表示
 - ユーザーが自分で削除も可能
+
+<img src="https://github.com/jphacks/TK_1905/blob/master/images/script.png" width="320px">
 
 ### 解決出来ること
 
