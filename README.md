@@ -7,46 +7,89 @@
 
 ### 背景（製品開発のきっかけ、課題等）
 
-ここに
-- こんかいのプロダクトの開発に至った背景
-- 着目した顧客・顧客の課題・現状
-を記入してください
+- 英語が全く喋れない
+- 日常会話さえできればいいと思っている
+
+#### 背景に対する原因
+
+- 英会話例文集とか見ても、自分が一生使わなさそうなものが多すぎる
+- 自分がよく使う文章だけを覚えたい
 
 ### 製品説明（具体的な製品の説明）
 
-こちらに製品の概要・特徴について説明を記載してください。
+ユーザーの音を全て録音、言語化し
+
+自分がよく使っている文/ワード順で、その言葉と英訳を表示するアプリ
 
 ### 特長
 
-#### 1. 特長1
+#### 1. 日々の日常会話を全て保存
 
-#### 2. 特長2
+- タップで集音開始
+- アプリを閉じていても、バックグラウンドで集音
 
-#### 3. 特長3
+#### 2. 自分がよく使う日本語とそれに対応する英文を貯蓄
+
+- 自然言語処理や翻訳機能を利用
+- 翻訳結果のスコアも格納
+
+#### 3. 自分専用の例文集を表示
+
+- 発言頻度の高い文章順で表示
+- 明らかに翻訳がおかしいとされるものは非表示
+- ユーザーが自分で削除も可能
 
 ### 解決出来ること
-この製品を利用することによって最終的に解決できることについて記載をしてください。
+
+- 自分が確実に使う英会話を優先して、英会話の勉強ができる
 
 ### 今後の展望
-今回は実現できなかったが、今後改善すること、どのように展開していくことが可能かについて記載をしてください。
 
+- 話者分離を用いて、自分の声だけを登録するように
+- 「音声認識 -> 文章分離 -> 翻訳」のそれぞれの精度の向上
+  - 例えば、日本語を綺麗な日本語に変換してから、翻訳をかけるなど
+- edge to edge をちゃんと実装する(android)
 
 ## 開発内容・開発技術
-### 活用した技術
-#### API・データ
-今回スポンサーから提供されたAPI、製品などの外部技術があれば記述をして下さい。
 
-* 
-* 
-* 
+### 活用した技術
+
+#### API・データ
+
+* Google Croud Natural Language API
+* Google Croud Translation API
 
 #### フレームワーク・ライブラリ・モジュール
-* 
-* 
+
+* インフラ
+  * nginx
+  * uwsgi
+  * sakura vps
+* サーバーサイド
+  * python
+  * django
+* データベース
+  * sqlite3
+  * redis
+* ジョブキュー
+  * celery
+* アプリケーション
+  * android
+    * kotlin
+    * kotlin coroutine
+    * dagger
+    * mvvm
+    * android speech recognizer
+* デザイン
+  * adobe illustrator
+  * adobe photoshop
+  * adobe XD
+  * adobe affter effects 
 
 #### デバイス
-* 
-* 
+
+* android 端末
+  * e.g. pixel 3a, pixel 4
 
 ### 研究内容・事前開発プロダクト（任意）
 
@@ -54,13 +97,23 @@
 
 ### 独自開発技術（Hack Dayで開発したもの）
 
-すべて二日間で開発しました．
+すべて二日間で開発
 
 #### 2日間に開発した独自の機能・技術
-* 独自で開発したものの内容をこちらに記載してください
-* 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください（任意）
 
-**Android**
+##### Server
+
+- ジョブキューフレームワークを用いて、Google Croud などでの演算は非同期で
+  - https://github.com/jphacks/TK_1905/blob/master/server/main/views/api/user_text.py#L26
+  - https://github.com/jphacks/TK_1905/blob/master/server/main/tasks.py#L8
+- Google Croud Natural Language API で分けきれない酷い日本語文章を、ヒューリスティックな手法で分解
+  - https://github.com/jphacks/TK_1905/blob/master/server/main/utils/googleutils/language.py
+  - https://github.com/jphacks/TK_1905/blob/master/server/main/tests.py
+- Google Croud Translation API と Wikipedia のデータで学習した doc2vec を用い、翻訳結果をスコアリング
+  - https://github.com/jphacks/TK_1905/blob/master/server/main/management/commands/calc_all_sentence_score.py
+
+##### Android
+
 - バックグランドでアプリが起動していて，音声認識して文字起こしする技術
 - 独自のスライドアニメーション
 - サーバに送る文字列が日本語として正常になるように制度の悪いセンテンスは送らないようにする機能
