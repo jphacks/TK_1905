@@ -32,6 +32,7 @@
             android:id="@+id/quizFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_quiz"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="@+id/titleLabel"
             app:layout_constraintStart_toEndOf="@+id/refreshLayout"
