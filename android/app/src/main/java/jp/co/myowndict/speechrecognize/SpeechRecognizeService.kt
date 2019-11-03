@@ -142,6 +142,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
         super.onDestroy()
 
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume, 0)
+        stopListening()
     }
 
     private fun stopListening() {
