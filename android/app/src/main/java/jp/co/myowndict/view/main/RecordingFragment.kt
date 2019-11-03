@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -76,6 +74,7 @@ class RecordingFragment : DaggerFragment() {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     @Suppress("unused")
     fun onMessageReceiveEvent(event: SpeechEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         binding.textScrollView.post {
             binding.textScrollView.fullScroll(View.FOCUS_DOWN)
         }
