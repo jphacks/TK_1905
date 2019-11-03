@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import dagger.android.DaggerService
+import jp.co.myowndict.R
 import jp.co.myowndict.data.Repository
 import jp.co.myowndict.model.SpeechEvent
 import kotlinx.coroutines.CoroutineScope
@@ -53,9 +54,9 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationWithUpperOreo() {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val name = "通知のタイトル的情報を設定"
-        val id = "casareal_foreground"
-        val notifyDescription = "この通知の詳細情報を設定します"
+        val name = "録音通知"
+        val id = "recme_recording"
+        val notifyDescription = "RecMeが録音中に表示するの通知です"
 
         if (manager.getNotificationChannel(id) == null) {
             val mChannel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH)
@@ -63,19 +64,20 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                 description = notifyDescription
             }
             manager.createNotificationChannel(mChannel)
-
         }
 
         notification = NotificationCompat.Builder(this, id)
-            .setContentTitle("通知のタイトル")
-            .setContentText("通知の内容")
+            .setContentTitle("RecMeが録音しています")
+            .setContentText("タップで録音を停止します")     // TODO: 停止の実装をする
+            .setSmallIcon(R.drawable.ic_mic)
             .build()
     }
 
     private fun createNotificationWithDownerOreo() {
         notification = NotificationCompat.Builder(this)
-            .setContentTitle("通知のタイトル")
-            .setContentText("通知の内容")
+            .setContentTitle("RecMeが録音しています")
+            .setContentText("タップで録音を停止します")
+            .setSmallIcon(R.drawable.ic_mic)
             .build()
     }
 
@@ -116,8 +118,14 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                     "ja_JP"
                 )
                 it.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-                it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
-                it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
+                it.putExtra(
+                    RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,
+                    1000
+                )
+                it.putExtra(
+                    RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS,
+                    1000
+                )
             }
 
             speechRecognizer!!.startListening(intent)
