@@ -84,6 +84,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timber.d("service is running")
+        isRunning = true
 
         startForeground(1, notification)
         startListening()
@@ -140,6 +141,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     override fun onDestroy() {
         super.onDestroy()
+        isRunning = false
 
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume, 0)
         stopListening()
@@ -237,5 +239,8 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     companion object {
         private const val MIN_CONFIDENCE_SCORE = 0.88
+
+        var isRunning: Boolean = false
+            private set
     }
 }
