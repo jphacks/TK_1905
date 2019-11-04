@@ -33,6 +33,9 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
     private var streamVolume: Int = 0
     private lateinit var audioManager: AudioManager
 
+    private val ignoredHolder = mutableListOf<SpeechEvent.OnIgnored>()
+    private val resultHolder = mutableListOf<SpeechEvent.OnResult>()
+
     @Inject
     lateinit var repository: Repository
     override val coroutineContext: CoroutineContext
@@ -225,15 +228,39 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                 Timber.d("$confidenceScore")
                 if (confidenceScore!! < MIN_CONFIDENCE_SCORE) {
                     Timber.w("Result was ignored by low confidence score.")
-                    EventBus.getDefault().postSticky(SpeechEvent.OnIgnored(it))
+                    postIgnored(it)
                 } else {
-                    EventBus.getDefault().postSticky(SpeechEvent.OnResult(it))
+                    postResult(it)
                 }
             }
 
             // トーストで結果を表示
             Timber.d(s)
             restartListeningService()
+        }
+
+        private fun postIgnored(text: String) {
+            val eventBus = EventBus.getDefault()
+            val ignored = SpeechEvent.OnIgnored(text)
+            if (isBackground) {
+                ignoredHolder.add(ignored)
+            } else {
+                ignoredHolder.forEach { i -> eventBus.postSticky(i) }
+                ignoredHolder.clear()
+                eventBus.postSticky(ignored)
+            }
+        }
+
+        private fun postResult(text: String) {
+            val eventBus = EventBus.getDefault()
+            val result = SpeechEvent.OnResult(text)
+            if (isBackground) {
+                resultHolder.add(result)
+            } else {
+                resultHolder.forEach { r -> eventBus.postSticky(r) }
+                resultHolder.clear()
+                eventBus.postSticky(result)
+            }
         }
     }
 
@@ -242,5 +269,8 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
         var isRunning: Boolean = false
             private set
+
+        // 良くない実装だが諦める
+        var isBackground: Boolean = false
     }
 }

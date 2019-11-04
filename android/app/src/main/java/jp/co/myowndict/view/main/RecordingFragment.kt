@@ -13,6 +13,7 @@ import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentRecordingBinding
 import jp.co.myowndict.model.SpeechEvent
+import jp.co.myowndict.speechrecognize.SpeechRecognizeService
 import jp.co.myowndict.view.MainViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -64,10 +65,12 @@ class RecordingFragment : DaggerFragment() {
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+        SpeechRecognizeService.isBackground = false
     }
 
     override fun onStop() {
         super.onStop()
+        SpeechRecognizeService.isBackground = true
         EventBus.getDefault().unregister(this)
     }
 
