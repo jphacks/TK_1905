@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import dagger.android.DaggerService
+import jp.co.myowndict.MyApplication
 import jp.co.myowndict.R
 import jp.co.myowndict.data.Repository
 import jp.co.myowndict.model.SpeechEvent
@@ -34,6 +35,8 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     @Inject
     lateinit var repository: Repository
+    @Inject
+    lateinit var application: MyApplication
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + Job()
 
@@ -53,31 +56,19 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationWithUpperOreo(): Notification {
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val name = "通知のタイトル的情報を設定"
-        val id = "casareal_foreground"
-        val notifyDescription = "この通知の詳細情報を設定します"
-
-        if (manager.getNotificationChannel(id) == null) {
-            val mChannel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH)
-            mChannel.apply {
-                description = notifyDescription
-            }
-            manager.createNotificationChannel(mChannel)
-        }
-
-        return NotificationCompat.Builder(this, id)
-            .setContentTitle("通知のタイトル")
-            .setContentText("通知の内容")
-            .setSmallIcon(R.mipmap.ic_launcher_foreground)
+        val channelId = application.getString(R.string.notification_channel_id)
+        return NotificationCompat.Builder(this, channelId)
+            .setContentTitle(application.getString(R.string.notification_content_title))
+            .setContentText(application.getString(R.string.notification_content_text))
+            .setSmallIcon(R.drawable.ic_recme_notifycation)
             .build()
     }
 
     private fun createNotificationWithDownerOreo(): Notification {
         return NotificationCompat.Builder(this)
-            .setContentTitle("通知のタイトル")
-            .setContentText("通知の内容")
-            .setSmallIcon(R.mipmap.ic_launcher_foreground)
+            .setContentTitle(application.getString(R.string.notification_content_title))
+            .setContentText(application.getString(R.string.notification_content_text))
+            .setSmallIcon(R.drawable.ic_recme_notifycation)
             .build()
     }
 
