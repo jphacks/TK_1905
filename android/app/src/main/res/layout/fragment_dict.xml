@@ -71,6 +71,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/micIconImageView"
                 android:layout_width="50dp"
                 android:layout_height="150dp"
                 android:layout_gravity="bottom"
