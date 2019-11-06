@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import dagger.android.DaggerService
+import jp.co.myowndict.R
 import jp.co.myowndict.data.Repository
 import jp.co.myowndict.model.SpeechEvent
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +29,6 @@ import kotlin.coroutines.CoroutineContext
 
 class SpeechRecognizeService : DaggerService(), CoroutineScope {
     private var speechRecognizer: SpeechRecognizer? = null
-    private lateinit var notification: Notification
     private var streamVolume: Int = 0
     private lateinit var audioManager: AudioManager
 
@@ -39,19 +39,20 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val notification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationWithUpperOreo()
         } else {
             createNotificationWithDownerOreo()
         }
+
+        startForeground(1, notification)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationWithUpperOreo() {
+    private fun createNotificationWithUpperOreo(): Notification {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val name = "通知のタイトル的情報を設定"
         val id = "casareal_foreground"
@@ -63,27 +64,26 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                 description = notifyDescription
             }
             manager.createNotificationChannel(mChannel)
-
         }
 
-        notification = NotificationCompat.Builder(this, id)
+        return NotificationCompat.Builder(this, id)
             .setContentTitle("通知のタイトル")
             .setContentText("通知の内容")
+            .setSmallIcon(R.mipmap.ic_launcher_foreground)
             .build()
     }
 
-    private fun createNotificationWithDownerOreo() {
-        notification = NotificationCompat.Builder(this)
+    private fun createNotificationWithDownerOreo(): Notification {
+        return NotificationCompat.Builder(this)
             .setContentTitle("通知のタイトル")
             .setContentText("通知の内容")
+            .setSmallIcon(R.mipmap.ic_launcher_foreground)
             .build()
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timber.d("service is running")
 
-        startForeground(1, notification)
         startListening()
 
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -116,8 +116,14 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                     "ja_JP"
                 )
                 it.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-                it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
-                it.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000)
+                it.putExtra(
+                    RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,
+                    1000
+                )
+                it.putExtra(
+                    RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS,
+                    1000
+                )
             }
 
             speechRecognizer!!.startListening(intent)
@@ -134,6 +140,8 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
         super.onDestroy()
 
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume, 0)
+        stopListening()
+        stopSelf()
     }
 
     private fun stopListening() {
