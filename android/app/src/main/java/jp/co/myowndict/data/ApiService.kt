@@ -1,10 +1,7 @@
 package jp.co.myowndict.data
 
 import jp.co.myowndict.di.RequireAuth
-import jp.co.myowndict.model.SentenceContainer
-import jp.co.myowndict.model.SpeechText
-import jp.co.myowndict.model.Token
-import jp.co.myowndict.model.Uuid
+import jp.co.myowndict.model.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -23,6 +20,10 @@ interface ApiService {
     @RequireAuth
     @GET("/api/user/sentences/?score__gt=0.8&order_by=-created_at")
     suspend fun getSentences(): Response<SentenceContainer>
+
+    @RequireAuth
+    @PUT("/api/user/sentences/{id}/")
+    suspend fun editSentence(@Path("id") sentence: String, @Body text: SpeechTextNew): Response<Sentence>
 
     @RequireAuth
     @DELETE("/api/user/sentences/{id}/")

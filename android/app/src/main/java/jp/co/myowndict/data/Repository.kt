@@ -59,6 +59,12 @@ class Repository @Inject constructor(
         }
     }
 
+    suspend fun editSentence(oldSentence: String, newSentence: String): Result<Sentence> {
+        return safeApiCall {
+            apiService.editSentence(oldSentence, SpeechTextNew(newSentence))
+        }
+    }
+
     suspend fun deleteSentence(sentence: String): Result<Unit> {
         return safeApiCall {
             apiService.deleteSentence(sentence)
