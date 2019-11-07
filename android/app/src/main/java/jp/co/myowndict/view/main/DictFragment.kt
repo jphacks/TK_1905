@@ -14,12 +14,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.afollestad.materialdialogs.MaterialDialog
 import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
+import jp.co.myowndict.BuildConfig
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentDictBinding
 import jp.co.myowndict.extensions.observeNonNull
 import jp.co.myowndict.model.Sentence
 import jp.co.myowndict.view.MainViewModel
-import java.util.*
 import javax.inject.Inject
 
 class DictFragment : DaggerFragment() {
@@ -38,7 +38,7 @@ class DictFragment : DaggerFragment() {
     ): View? {
         tts = TextToSpeech(requireContext()) {
             when (it) {
-                TextToSpeech.SUCCESS -> tts.language = Locale.US
+                TextToSpeech.SUCCESS -> tts.language = BuildConfig.TEXT_TO_SPEECH_LOCALE
                 else -> Toast.makeText(
                     context,
                     R.string.tts_init_error_message,

@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
+import jp.co.myowndict.BuildConfig
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentQuizBinding
 import jp.co.myowndict.databinding.ItemQuizBinding
@@ -20,7 +21,6 @@ import jp.co.myowndict.model.Sentence
 import jp.co.myowndict.view.common.DataBoundListAdapter
 import jp.co.myowndict.view.common.SimpleDiffUtil
 import jp.co.myowndict.view.updateAppBar
-import java.util.*
 import javax.inject.Inject
 
 class QuizFragment : DaggerFragment() {
@@ -37,7 +37,7 @@ class QuizFragment : DaggerFragment() {
     ): View? {
         tts = TextToSpeech(requireContext()) {
             when (it) {
-                TextToSpeech.SUCCESS -> tts.language = Locale.US
+                TextToSpeech.SUCCESS -> tts.language = BuildConfig.TEXT_TO_SPEECH_LOCALE
                 else -> Toast.makeText(
                     context,
                     R.string.tts_init_error_message,
