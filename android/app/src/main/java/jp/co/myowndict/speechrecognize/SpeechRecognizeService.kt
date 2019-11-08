@@ -1,8 +1,6 @@
 package jp.co.myowndict.speechrecognize
 
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
@@ -18,7 +16,6 @@ import androidx.core.app.NotificationCompat
 import dagger.android.DaggerService
 import jp.co.myowndict.MyApplication
 import jp.co.myowndict.R
-import jp.co.myowndict.data.Repository
 import jp.co.myowndict.model.SpeechEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,8 +33,6 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
     private val ignoredHolder = mutableListOf<SpeechEvent.OnIgnored>()
     private val resultHolder = mutableListOf<SpeechEvent.OnResult>()
 
-    @Inject
-    lateinit var repository: Repository
     @Inject
     lateinit var application: MyApplication
     override val coroutineContext: CoroutineContext
