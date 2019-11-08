@@ -25,7 +25,6 @@ import jp.co.myowndict.view.MainViewModel
 import jp.co.myowndict.view.getNavigationBarSize
 import jp.co.myowndict.view.getStatusBarSize
 import jp.co.myowndict.view.updateMargins
-import java.util.*
 import javax.inject.Inject
 
 class DictFragment : DaggerFragment() {
@@ -142,7 +141,7 @@ class DictFragment : DaggerFragment() {
 
     private fun speakSentence(sentence: Sentence) {
         if (tts.isSpeaking) tts.stop()
-        tts.speak(sentence.contentEn, TextToSpeech.QUEUE_FLUSH, null, "")
+        tts.speak(sentence.translatedContent, TextToSpeech.QUEUE_FLUSH, null, "")
     }
 
     private fun editSentence(sentence: Sentence) {

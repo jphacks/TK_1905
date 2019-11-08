@@ -89,7 +89,7 @@ class QuizFragment : DaggerFragment() {
 
     private fun speakSentence(sentence: Sentence) {
         if (tts.isSpeaking) tts.stop()
-        tts.speak(sentence.contentEn, TextToSpeech.QUEUE_FLUSH, null, "")
+        tts.speak(sentence.translatedContent, TextToSpeech.QUEUE_FLUSH, null, "")
     }
 }
 

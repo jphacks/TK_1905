@@ -35,8 +35,8 @@ class DictViewModel @Inject constructor(
                 is Result.Success -> sentencesLiveData.value =
                     result.data.sentences.map {
                         it.copy(
-                            contentEn = HtmlCompat.fromHtml(
-                                it.contentEn,
+                            translatedContent = HtmlCompat.fromHtml(
+                                it.translatedContent,
                                 HtmlCompat.FROM_HTML_MODE_COMPACT
                             ).toString()
                         )
