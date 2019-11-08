@@ -24,7 +24,6 @@ import jp.co.myowndict.view.getNavigationBarSize
 import jp.co.myowndict.view.getStatusBarSize
 import jp.co.myowndict.view.updateAppBar
 import jp.co.myowndict.view.updateMargins
-import java.util.*
 import javax.inject.Inject
 
 class QuizFragment : DaggerFragment() {
