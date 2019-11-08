@@ -7,9 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
-import androidx.core.view.ViewCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -22,7 +19,6 @@ import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentMainBinding
 import jp.co.myowndict.extensions.observeNonNull
 import jp.co.myowndict.view.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainFragment : DaggerFragment() {
@@ -57,8 +53,8 @@ class MainFragment : DaggerFragment() {
     }
 
     private fun observe() {
-        mainViewModel.isRunning.observeNonNull(viewLifecycleOwner) { isRunning ->
-            if (!isRunning) binding.viewPager.setCurrentItem(0, true)
+        mainViewModel.stopRecordingEvent.observeNonNull(viewLifecycleOwner) {
+            binding.viewPager.setCurrentItem(0, true)
         }
         mainViewModel.showQuizEvent.observeNonNull(viewLifecycleOwner) {
             showQuizFragment()
@@ -81,15 +77,16 @@ class MainFragment : DaggerFragment() {
         fun onShowDictFragment() {
             val window = parentFragment.requireActivity().window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = parseColor("#ddffffff")
+            window.statusBarColor = parseColor("#DDFAFAFA")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.navigationBarColor =
-                    parentFragment.requireActivity().getColor(android.R.color.transparent)
+                window.navigationBarColor = parseColor("#DDFAFAFA")
                 window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             } else {
                 window.navigationBarColor =
-                    parentFragment.requireActivity().getColor(R.color.colorPrimary)
+                    parentFragment.requireActivity().getColor(R.color.background)
                 window.decorView.systemUiVisibility =
                     View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             }
@@ -105,9 +102,16 @@ class MainFragment : DaggerFragment() {
             val window = parentFragment.requireActivity().window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = parseColor("#dd505151")
-            window.navigationBarColor =
-                parentFragment.requireActivity().getColor(R.color.colorPrimary)
-            window.decorView.systemUiVisibility = 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.navigationBarColor = parseColor("#dd505151")
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            } else {
+                window.navigationBarColor =
+                    parentFragment.requireActivity().getColor(R.color.colorPrimary)
+                window.decorView.systemUiVisibility = 0
+            }
             fragments.forEach { frag ->
                 when (frag) {
                     is DictFragment -> frag.hideTag()

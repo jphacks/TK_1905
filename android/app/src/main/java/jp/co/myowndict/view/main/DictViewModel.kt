@@ -17,22 +17,49 @@ import javax.inject.Inject
 class DictViewModel @Inject constructor(
     private val repository: Repository
 ) : ApiFragmentViewModel() {
-    private val sentencesLiveData: MutableLiveData<List<Sentence>> = MutableLiveData()
-    private val _deleteEvent = LiveEvent<Unit>()
     val sentences: LiveData<List<Sentence>>
         get() = sentencesLiveData
+    val editEvent: LiveData<Unit>
+        get() = _editEvent
     val deleteEvent: LiveData<Unit>
         get() = _deleteEvent
+
+
+    private val sentencesLiveData: MutableLiveData<List<Sentence>> = MutableLiveData()
+    private val _editEvent = LiveEvent<Unit>()
+    private val _deleteEvent = LiveEvent<Unit>()
 
     fun getSentences() {
         viewModelScope.launchWithProgress(inProgressLiveData) {
             when (val result = repository.getSentences()) {
                 is Result.Success -> sentencesLiveData.value =
                     result.data.sentences.map {
-                        it.copy(contentEn = HtmlCompat.fromHtml(it.contentEn,
-                            HtmlCompat.FROM_HTML_MODE_COMPACT).toString())
+                        it.copy(
+                            contentEn = HtmlCompat.fromHtml(
+                                it.contentEn,
+                                HtmlCompat.FROM_HTML_MODE_COMPACT
+                            ).toString()
+                        )
                     }
                 is Result.Error -> Timber.e("Failed to fetch sentences")
+            }
+        }
+    }
+
+    fun editSentence(sentence: Sentence, updatedContentJp: String) {
+        viewModelScope.launchWithProgress(inProgressLiveData) {
+            when (val result = repository.editSentence(sentence.contentJp, updatedContentJp)) {
+                is Result.Success -> {
+                    _editEvent.notify()
+                    sentencesLiveData.value = sentencesLiveData.value
+                        ?.toMutableList()
+                        ?.apply {
+                            val index = indexOf(sentence)
+                            removeAt(index)
+                            add(index, result.data)
+                        }
+                }
+                is Result.Error -> Timber.e("Failed to edit sentence")
             }
         }
     }
