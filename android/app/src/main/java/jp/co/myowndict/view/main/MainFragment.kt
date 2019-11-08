@@ -7,9 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
-import androidx.core.view.ViewCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -22,7 +19,6 @@ import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentMainBinding
 import jp.co.myowndict.extensions.observeNonNull
 import jp.co.myowndict.view.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainFragment : DaggerFragment() {
@@ -57,8 +53,8 @@ class MainFragment : DaggerFragment() {
     }
 
     private fun observe() {
-        mainViewModel.isRunning.observeNonNull(viewLifecycleOwner) { isRunning ->
-            if (!isRunning) binding.viewPager.setCurrentItem(0, true)
+        mainViewModel.stopRecordingEvent.observeNonNull(viewLifecycleOwner) {
+            binding.viewPager.setCurrentItem(0, true)
         }
         mainViewModel.showQuizEvent.observeNonNull(viewLifecycleOwner) {
             showQuizFragment()

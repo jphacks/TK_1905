@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.*
+import androidx.core.view.marginBottom
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +17,7 @@ import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
 import jp.co.myowndict.databinding.FragmentRecordingBinding
 import jp.co.myowndict.model.SpeechEvent
+import jp.co.myowndict.speechrecognize.SpeechRecognizeService
 import jp.co.myowndict.view.MainViewModel
 import jp.co.myowndict.view.getNavigationBarSize
 import jp.co.myowndict.view.getStatusBarSize
@@ -92,16 +96,19 @@ class RecordingFragment : DaggerFragment() {
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+        SpeechRecognizeService.isBackground = false
     }
 
     override fun onStop() {
         super.onStop()
+        SpeechRecognizeService.isBackground = true
         EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     @Suppress("unused")
     fun onMessageReceiveEvent(event: SpeechEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         binding.textScrollView.post {
             binding.textScrollView.fullScroll(View.FOCUS_DOWN)
         }

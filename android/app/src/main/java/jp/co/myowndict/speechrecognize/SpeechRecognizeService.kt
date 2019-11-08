@@ -1,8 +1,6 @@
 package jp.co.myowndict.speechrecognize
 
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
@@ -18,7 +16,6 @@ import androidx.core.app.NotificationCompat
 import dagger.android.DaggerService
 import jp.co.myowndict.MyApplication
 import jp.co.myowndict.R
-import jp.co.myowndict.data.Repository
 import jp.co.myowndict.model.SpeechEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,8 +30,9 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
     private var streamVolume: Int = 0
     private lateinit var audioManager: AudioManager
 
-    @Inject
-    lateinit var repository: Repository
+    private val ignoredHolder = mutableListOf<SpeechEvent.OnIgnored>()
+    private val resultHolder = mutableListOf<SpeechEvent.OnResult>()
+
     @Inject
     lateinit var application: MyApplication
     override val coroutineContext: CoroutineContext
@@ -74,6 +72,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timber.d("service is running")
+        isRunning = true
 
         startListening()
 
@@ -129,6 +128,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     override fun onDestroy() {
         super.onDestroy()
+        isRunning = false
 
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume, 0)
         stopListening()
@@ -213,9 +213,9 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
                 Timber.d("$confidenceScore")
                 if (confidenceScore!! < MIN_CONFIDENCE_SCORE) {
                     Timber.w("Result was ignored by low confidence score.")
-                    EventBus.getDefault().postSticky(SpeechEvent.OnIgnored(it))
+                    postIgnored(it)
                 } else {
-                    EventBus.getDefault().postSticky(SpeechEvent.OnResult(it))
+                    postResult(it)
                 }
             }
 
@@ -223,9 +223,39 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
             Timber.d(s)
             restartListeningService()
         }
+
+        private fun postIgnored(text: String) {
+            val eventBus = EventBus.getDefault()
+            val ignored = SpeechEvent.OnIgnored(text)
+            if (isBackground) {
+                ignoredHolder.add(ignored)
+            } else {
+                ignoredHolder.forEach { i -> eventBus.postSticky(i) }
+                ignoredHolder.clear()
+                eventBus.postSticky(ignored)
+            }
+        }
+
+        private fun postResult(text: String) {
+            val eventBus = EventBus.getDefault()
+            val result = SpeechEvent.OnResult(text)
+            if (isBackground) {
+                resultHolder.add(result)
+            } else {
+                resultHolder.forEach { r -> eventBus.postSticky(r) }
+                resultHolder.clear()
+                eventBus.postSticky(result)
+            }
+        }
     }
 
     companion object {
         private const val MIN_CONFIDENCE_SCORE = 0.88
+
+        var isRunning: Boolean = false
+            private set
+
+        // 良くない実装だが諦める
+        var isBackground: Boolean = false
     }
 }

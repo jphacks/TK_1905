@@ -16,7 +16,6 @@ import dagger.android.support.DaggerAppCompatActivity
 import jp.co.myowndict.R
 import jp.co.myowndict.extensions.observeNonNull
 import jp.co.myowndict.speechrecognize.SpeechRecognizeService
-import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -42,6 +41,7 @@ class MainActivity : DaggerAppCompatActivity() {
             window.navigationBarColor = getColor(R.color.colorPrimary)
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
+        viewModel.updateSpeechRecognizeServiceState()
     }
 
     @NeedsPermission(Manifest.permission.RECORD_AUDIO)
@@ -60,10 +60,8 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun observe() {
-        viewModel.isRunning.observeNonNull(this) {
-            if (it) startSpeechRecordingWithPermissionCheck()
-            else stopSpeechRecording()
-        }
+        viewModel.startRecordingEvent.observeNonNull(this) { startSpeechRecordingWithPermissionCheck() }
+        viewModel.stopRecordingEvent.observeNonNull(this) { stopSpeechRecording() }
     }
 
     private fun stopSpeechRecording() {
