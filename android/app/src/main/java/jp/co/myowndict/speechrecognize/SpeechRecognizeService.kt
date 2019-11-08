@@ -1,6 +1,7 @@
 package jp.co.myowndict.speechrecognize
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
@@ -17,6 +18,7 @@ import dagger.android.DaggerService
 import jp.co.myowndict.MyApplication
 import jp.co.myowndict.R
 import jp.co.myowndict.model.SpeechEvent
+import jp.co.myowndict.view.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -59,6 +61,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
             .setContentTitle(application.getString(R.string.notification_content_title))
             .setContentText(application.getString(R.string.notification_content_text))
             .setSmallIcon(R.drawable.ic_recme_notifycation)
+            .setContentIntent(createPendingIntent())
             .build()
     }
 
@@ -67,8 +70,18 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
             .setContentTitle(application.getString(R.string.notification_content_title))
             .setContentText(application.getString(R.string.notification_content_text))
             .setSmallIcon(R.drawable.ic_recme_notifycation)
+            .setContentIntent(createPendingIntent())
             .build()
     }
+
+    private fun createPendingIntent() = PendingIntent.getActivity(
+        application.applicationContext,
+        PUSH_REQUEST_CODE,
+        Intent(application.applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        },
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timber.d("service is running")
@@ -251,6 +264,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     companion object {
         private const val MIN_CONFIDENCE_SCORE = 0.85
+        private const val PUSH_REQUEST_CODE = 1000
 
         var isRunning: Boolean = false
             private set
