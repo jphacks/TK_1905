@@ -8,12 +8,24 @@ apply plugin: "kotlin-kapt"
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "jp.co.myowndict"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    flavorDimensions "default"
+    productFlavors {
+        english {
+            applicationId "jp.co.myowndict"
+            resValue("string", "app_name", "RecMe")
+            buildConfigField("java.util.Locale", "TEXT_TO_SPEECH_LOCALE", "java.util.Locale.US")
+        }
+        chinese {
+            applicationId "jp.co.myowndict.chines"
+            resValue("string", "app_name", "RecMe-Chines")
+            buildConfigField("java.util.Locale", "TEXT_TO_SPEECH_LOCALE", "java.util.Locale.CHINESE")
+        }
     }
     buildTypes {
         release {
