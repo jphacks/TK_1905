@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@{sentence.contentEn}"
+                    android:text="@{sentence.translatedContent}"
                     android:textColor="@color/mainTextColor"
                     android:visibility="invisible"
                     android:textSize="16sp"

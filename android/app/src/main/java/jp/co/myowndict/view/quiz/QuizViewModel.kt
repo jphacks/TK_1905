@@ -3,7 +3,6 @@ package jp.co.myowndict.view.quiz
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import jp.co.myowndict.data.Repository
 import jp.co.myowndict.extensions.launchWithProgress
@@ -27,8 +26,8 @@ class QuizViewModel @Inject constructor(
                 is Result.Success -> sentencesLiveData.value =
                     result.data.sentences.map {
                         it.copy(
-                            contentEn = HtmlCompat.fromHtml(
-                                it.contentEn,
+                            translatedContent = HtmlCompat.fromHtml(
+                                it.translatedContent,
                                 HtmlCompat.FROM_HTML_MODE_COMPACT
                             ).toString()
                         )
