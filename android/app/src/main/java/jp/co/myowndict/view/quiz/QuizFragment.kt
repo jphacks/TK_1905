@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
+import androidx.core.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +19,10 @@ import jp.co.myowndict.extensions.observeNonNull
 import jp.co.myowndict.model.Sentence
 import jp.co.myowndict.view.common.DataBoundListAdapter
 import jp.co.myowndict.view.common.SimpleDiffUtil
+import jp.co.myowndict.view.getNavigationBarSize
+import jp.co.myowndict.view.getStatusBarSize
 import jp.co.myowndict.view.updateAppBar
+import jp.co.myowndict.view.updateMargins
 import java.util.*
 import javax.inject.Inject
 
@@ -49,7 +52,25 @@ class QuizFragment : DaggerFragment() {
         return binding.root
     }
 
+    private fun initLayoutMargins() {
+        val statusBarSize = getStatusBarSize()
+        binding.appBarLayout.updateMargins(
+            binding.appBarLayout.marginLeft,
+            binding.appBarLayout.marginRight,
+            binding.appBarLayout.marginTop + statusBarSize,
+            binding.appBarLayout.marginBottom
+        )
+        val navigationBarSize = getNavigationBarSize()
+        binding.quizViewPager.updateMargins(
+            binding.quizViewPager.marginLeft,
+            binding.quizViewPager.marginRight,
+            binding.quizViewPager.marginTop,
+            navigationBarSize
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initLayoutMargins()
         updateAppBar("Practice")
         val adapter = QuizPagerAdapter(viewLifecycleOwner,
             onClick = { sentence -> speakSentence(sentence) }

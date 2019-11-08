@@ -6,4 +6,10 @@
 
     <string name="context_menu_edit">編集</string>
     <string name="context_menu_delete">削除</string>
+
+    <string name="notification_channel_name">音声認識通知</string>
+    <string name="notification_channel_description">バックグランドでの音声認識が起動している場合に表示されます</string>
+    <string name="notification_channel_id">recme_speech_recognizer_foreground</string>
+    <string name="notification_content_title">音声を認識しています</string>
+    <string name="notification_content_text">終了するにはStopボタンを押してください</string>
 </resources>
