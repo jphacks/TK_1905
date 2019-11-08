@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.view.*
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import com.wada811.databinding.dataBinding
 import dagger.android.support.DaggerFragment
 import jp.co.myowndict.R
@@ -19,6 +21,9 @@ import jp.co.myowndict.databinding.FragmentDictBinding
 import jp.co.myowndict.extensions.observeNonNull
 import jp.co.myowndict.model.Sentence
 import jp.co.myowndict.view.MainViewModel
+import jp.co.myowndict.view.getNavigationBarSize
+import jp.co.myowndict.view.getStatusBarSize
+import jp.co.myowndict.view.updateMargins
 import java.util.*
 import javax.inject.Inject
 
@@ -51,10 +56,30 @@ class DictFragment : DaggerFragment() {
         return binding.root
     }
 
+    private fun initLayoutMargins() {
+        val statusBarSize = getStatusBarSize()
+        binding.titleLabel.updateMargins(
+            binding.titleLabel.marginLeft,
+            binding.titleLabel.marginRight,
+            binding.titleLabel.marginTop + statusBarSize,
+            binding.titleLabel.marginBottom
+        )
+        val navigationBarSize = getNavigationBarSize()
+        binding.micIconImageView.updateMargins(
+            binding.micIconImageView.marginLeft,
+            binding.micIconImageView.marginRight,
+            binding.micIconImageView.marginTop,
+            navigationBarSize
+        )
+        binding.recyclerView.updatePadding(bottom = binding.recyclerView.paddingBottom + navigationBarSize)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initLayoutMargins()
         adapter = SentenceAdapter(viewLifecycleOwner,
-            onClick = { sentence -> speakSentence(sentence) },
-            onLongClick = { sentence -> deleteSentence(sentence) }
+            onClickItem = { sentence -> speakSentence(sentence) },
+            onClickEditMenu = { sentence -> editSentence(sentence) },
+            onClickDeleteMenu = { sentence -> deleteSentence(sentence) }
         )
         binding.recyclerView.let { rv ->
             rv.adapter = adapter
@@ -83,6 +108,10 @@ class DictFragment : DaggerFragment() {
         dictViewModel.sentences.observeNonNull(viewLifecycleOwner) {
             adapter.submitList(it)
             binding.refreshLayout.isRefreshing = false
+        }
+        dictViewModel.editEvent.observeNonNull(viewLifecycleOwner) {
+            // とりあえずToast
+            Toast.makeText(context, "更新しました", Toast.LENGTH_SHORT).show()
         }
         dictViewModel.deleteEvent.observeNonNull(viewLifecycleOwner) {
             // とりあえずToast
@@ -113,6 +142,15 @@ class DictFragment : DaggerFragment() {
     private fun speakSentence(sentence: Sentence) {
         if (tts.isSpeaking) tts.stop()
         tts.speak(sentence.contentEn, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+
+    private fun editSentence(sentence: Sentence) {
+        MaterialDialog(requireContext()).show {
+            input(
+                prefill = sentence.contentJp,
+                allowEmpty = false
+            ) { _, text -> dictViewModel.editSentence(sentence, text.toString()) }
+        }
     }
 
     private fun deleteSentence(sentence: Sentence) {

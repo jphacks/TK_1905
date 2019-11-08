@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.*
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,9 @@ import jp.co.myowndict.databinding.FragmentRecordingBinding
 import jp.co.myowndict.model.SpeechEvent
 import jp.co.myowndict.speechrecognize.SpeechRecognizeService
 import jp.co.myowndict.view.MainViewModel
+import jp.co.myowndict.view.getNavigationBarSize
+import jp.co.myowndict.view.getStatusBarSize
+import jp.co.myowndict.view.updateMargins
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -36,7 +40,31 @@ class RecordingFragment : DaggerFragment() {
         return binding.root
     }
 
+    private fun initLayoutMargins() {
+        val statusBarSize = getStatusBarSize()
+        binding.titleLabel.updateMargins(
+            binding.titleLabel.marginLeft,
+            binding.titleLabel.marginRight,
+            binding.titleLabel.marginTop + statusBarSize,
+            binding.titleLabel.marginBottom
+        )
+        val navigationBarSize = getNavigationBarSize()
+        binding.slideBarImage.updateMargins(
+            binding.slideBarImage.marginLeft,
+            binding.slideBarImage.marginRight,
+            binding.slideBarImage.marginTop,
+            navigationBarSize
+        )
+        binding.fab.updateMargins(
+            binding.fab.marginLeft,
+            binding.fab.marginRight,
+            binding.fab.marginTop,
+            binding.fab.marginBottom + navigationBarSize
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initLayoutMargins()
         binding.fab.setOnClickListener { mainViewModel.stopRecording() }
         binding.also {
             it.viewModel = viewModel

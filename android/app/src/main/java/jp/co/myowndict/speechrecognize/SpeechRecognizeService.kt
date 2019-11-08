@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import dagger.android.DaggerService
+import jp.co.myowndict.MyApplication
 import jp.co.myowndict.R
 import jp.co.myowndict.data.Repository
 import jp.co.myowndict.model.SpeechEvent
@@ -29,7 +30,6 @@ import kotlin.coroutines.CoroutineContext
 
 class SpeechRecognizeService : DaggerService(), CoroutineScope {
     private var speechRecognizer: SpeechRecognizer? = null
-    private lateinit var notification: Notification
     private var streamVolume: Int = 0
     private lateinit var audioManager: AudioManager
 
@@ -38,58 +38,47 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
     @Inject
     lateinit var repository: Repository
+    @Inject
+    lateinit var application: MyApplication
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + Job()
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val notification = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationWithUpperOreo()
         } else {
             createNotificationWithDownerOreo()
         }
+
+        startForeground(1, notification)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationWithUpperOreo() {
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val name = "録音通知"
-        val id = "recme_recording"
-        val notifyDescription = "RecMeが録音中に表示するの通知です"
-
-        if (manager.getNotificationChannel(id) == null) {
-            val mChannel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH)
-            mChannel.apply {
-                description = notifyDescription
-            }
-            manager.createNotificationChannel(mChannel)
-        }
-
-        notification = NotificationCompat.Builder(this, id)
-            .setContentTitle("RecMeが録音しています")
-            .setContentText("タップで録音を停止します")     // TODO: 停止の実装をする
-            .setSmallIcon(R.drawable.ic_mic)
+    private fun createNotificationWithUpperOreo(): Notification {
+        val channelId = application.getString(R.string.notification_channel_id)
+        return NotificationCompat.Builder(this, channelId)
+            .setContentTitle(application.getString(R.string.notification_content_title))
+            .setContentText(application.getString(R.string.notification_content_text))
+            .setSmallIcon(R.drawable.ic_recme_notifycation)
             .build()
     }
 
-    private fun createNotificationWithDownerOreo() {
-        notification = NotificationCompat.Builder(this)
-            .setContentTitle("RecMeが録音しています")
-            .setContentText("タップで録音を停止します")
-            .setSmallIcon(R.drawable.ic_mic)
+    private fun createNotificationWithDownerOreo(): Notification {
+        return NotificationCompat.Builder(this)
+            .setContentTitle(application.getString(R.string.notification_content_title))
+            .setContentText(application.getString(R.string.notification_content_text))
+            .setSmallIcon(R.drawable.ic_recme_notifycation)
             .build()
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Timber.d("service is running")
         isRunning = true
 
-        startForeground(1, notification)
         startListening()
 
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -148,6 +137,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
 
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, streamVolume, 0)
         stopListening()
+        stopSelf()
     }
 
     private fun stopListening() {

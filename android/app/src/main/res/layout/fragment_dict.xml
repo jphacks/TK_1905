@@ -33,18 +33,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_quiz"
+            android:layout_marginEnd="36dp"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="@+id/titleLabel"
-            app:layout_constraintStart_toEndOf="@+id/refreshLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/titleLabel" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refreshLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="76dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +55,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:clipToPadding="false"
+                android:paddingBottom="120dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_sentence" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -68,6 +70,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/micIconImageView"
                 android:layout_width="50dp"
                 android:layout_height="150dp"
                 android:layout_gravity="bottom"
