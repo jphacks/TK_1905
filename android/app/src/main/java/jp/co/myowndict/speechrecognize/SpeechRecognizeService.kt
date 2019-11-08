@@ -250,7 +250,7 @@ class SpeechRecognizeService : DaggerService(), CoroutineScope {
     }
 
     companion object {
-        private const val MIN_CONFIDENCE_SCORE = 0.88
+        private const val MIN_CONFIDENCE_SCORE = 0.85
 
         var isRunning: Boolean = false
             private set
