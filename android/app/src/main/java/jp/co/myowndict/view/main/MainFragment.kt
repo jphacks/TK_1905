@@ -81,15 +81,16 @@ class MainFragment : DaggerFragment() {
         fun onShowDictFragment() {
             val window = parentFragment.requireActivity().window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = parseColor("#ddffffff")
+            window.statusBarColor = parseColor("#DDFAFAFA")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.navigationBarColor =
-                    parentFragment.requireActivity().getColor(android.R.color.transparent)
+                window.navigationBarColor = parseColor("#DDFAFAFA")
                 window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             } else {
                 window.navigationBarColor =
-                    parentFragment.requireActivity().getColor(R.color.colorPrimary)
+                    parentFragment.requireActivity().getColor(R.color.background)
                 window.decorView.systemUiVisibility =
                     View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             }
@@ -105,9 +106,16 @@ class MainFragment : DaggerFragment() {
             val window = parentFragment.requireActivity().window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = parseColor("#dd505151")
-            window.navigationBarColor =
-                parentFragment.requireActivity().getColor(R.color.colorPrimary)
-            window.decorView.systemUiVisibility = 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.navigationBarColor = parseColor("#dd505151")
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            } else {
+                window.navigationBarColor =
+                    parentFragment.requireActivity().getColor(R.color.colorPrimary)
+                window.decorView.systemUiVisibility = 0
+            }
             fragments.forEach { frag ->
                 when (frag) {
                     is DictFragment -> frag.hideTag()
